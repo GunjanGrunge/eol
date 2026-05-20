@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Sparkles, Code2, GraduationCap, Zap, FlaskConical, Compass } from "lucide-react";
 import { GradientOrb } from "@/components/GradientOrb";
+import { AnimatedHeroBg } from "@/components/AnimatedHeroBg";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Button } from "@/components/ui/button";
 
@@ -36,7 +37,7 @@ function Home() {
     <div>
       {/* HERO */}
       <section className="relative overflow-hidden" style={{ background: "var(--gradient-hero)" }}>
-        <GradientOrb className="-right-32 top-10 h-[500px] w-[500px]" />
+        <AnimatedHeroBg />
         <div className="relative mx-auto max-w-7xl px-6 py-24 md:py-36">
           <div className="max-w-3xl animate-fade-up">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-primary">
