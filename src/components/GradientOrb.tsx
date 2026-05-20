@@ -10,7 +10,7 @@ export function GradientOrb({ className = "" }: { className?: string }) {
           className="absolute inset-[20%] animate-float rounded-full opacity-60 blur-2xl"
           style={{
             background:
-              "radial-gradient(circle, oklch(0.74 0.16 295) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(217, 83, 34, 0.35) 0%, transparent 70%)",
           }}
         />
       </div>
