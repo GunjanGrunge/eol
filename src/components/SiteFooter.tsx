@@ -6,7 +6,7 @@ export function SiteFooter() {
     <footer className="mt-32 border-t border-border/40 bg-background/60">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:grid-cols-4">
         <div className="md:col-span-2">
-          <img src={logo} alt="Eolarity Innovations LLP" className="h-10 w-auto brightness-0 invert" />
+          <img src={logo} alt="Eolarity Innovations LLP" className="h-10 w-auto" />
           <p className="mt-4 max-w-sm text-sm text-muted-foreground">
             Custom GenAI solutions, in-house products, and consulting built at
             the speed of the current meta.
