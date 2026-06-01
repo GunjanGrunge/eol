@@ -1,29 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
-import { 
-  ArrowRight, 
-  Sparkles, 
-  Code2, 
-  GraduationCap, 
-  Zap, 
-  FlaskConical, 
-  Compass, 
-  Cpu, 
-  Activity, 
-  Network, 
-  ArrowUpRight, 
-  Terminal, 
-  Command, 
-  Orbit, 
-  Maximize2,
+import {
+  ArrowRight,
+  Sparkles,
+  Code2,
+  GraduationCap,
+  Zap,
+  FlaskConical,
+  Compass,
+  Cpu,
+  ArrowUpRight,
   FileCode2,
-  Settings,
   Flame,
-  CheckCircle2,
-  Play,
-  RotateCcw
+  ChevronDown
 } from "lucide-react";
-import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
@@ -45,12 +36,12 @@ export const Route = createFileRoute("/")({
 });
 
 const capabilities = [
-  { icon: Flame, title: "Model Fine-Tuning", body: "Custom SFT & DPO training pipelines. Adapting open weights (Llama, Mistral, DeepSeek) for extreme domain precision." },
-  { icon: Code2, title: "Coder Plugins", body: "Developer productivity tools and VS Code/JetBrains plugins designed to automate boilerplate and ship faster." },
-  { icon: GraduationCap, title: "Education Products", body: "In-house learning platforms structured around real-world AI implementation and fast mastery." },
-  { icon: Zap, title: "AI Solutions", body: "Custom GenAI systems tailored to your workflows, data pipelines, and technical stack." },
-  { icon: FlaskConical, title: "Applied Research", body: "Rigorous research on emerging LLM techniques to capture immediate capability gains." },
-  { icon: Compass, title: "Solutioning & Advisory", body: "Strategic guidance to cut through market noise and implement pragmatic, vendor-agnostic architecture." },
+  { icon: Flame, title: "Model Fine-Tuning", body: "Custom SFT & DPO training pipelines. Adapting open weights (Llama, Mistral, DeepSeek) for extreme domain precision.", span: 2 },
+  { icon: Code2, title: "Coder Plugins", body: "Developer productivity tools and VS Code/JetBrains plugins designed to automate boilerplate and ship faster.", span: 1 },
+  { icon: GraduationCap, title: "Education Products", body: "In-house learning platforms structured around real-world AI implementation and fast mastery.", span: 1 },
+  { icon: Zap, title: "AI Solutions", body: "Custom GenAI systems tailored to your workflows, data pipelines, and technical stack.", span: 2 },
+  { icon: FlaskConical, title: "Applied Research", body: "Rigorous research on emerging LLM techniques to capture immediate capability gains.", span: 1 },
+  { icon: Compass, title: "Solutioning & Advisory", body: "Strategic guidance to cut through market noise and implement pragmatic, vendor-agnostic architecture.", span: 1 },
 ];
 
 const terminalLogs = [
@@ -108,6 +99,118 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
   );
 }
 
+// Animated counter hook
+function useCounter(target: number, duration: number = 1.5) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-50px" });
+
+  useEffect(() => {
+    if (!inView) return;
+    const start = Date.now();
+    const tick = () => {
+      const elapsed = (Date.now() - start) / 1000;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(eased * target));
+      if (progress < 1) requestAnimationFrame(tick);
+      else setCount(target);
+    };
+    requestAnimationFrame(tick);
+  }, [inView, target, duration]);
+
+  return { count, ref };
+}
+
+// Animated gradient border capability card
+function CapabilityCard({ c, i, spanTwo }: { c: typeof capabilities[0]; i: number; spanTwo: boolean }) {
+  const [hovered, setHovered] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: cardRef, offset: ["start end", "end start"] });
+  const parallaxY = useTransform(scrollYProgress, [0, 1], [20 * ((i % 3) - 1), -20 * ((i % 3) - 1)]);
+
+  return (
+    <motion.div
+      ref={cardRef}
+      style={{ y: parallaxY }}
+      className={spanTwo ? "md:col-span-2" : ""}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, delay: i * 0.05 }}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      whileHover={{ scale: 1.02, y: parallaxY.get() - 4 }}
+    >
+      <div className="relative h-full">
+        {/* Animated gradient border */}
+        <motion.div
+          className="absolute -inset-[1.5px] rounded-xl z-0 pointer-events-none"
+          style={{
+            background: hovered
+              ? "linear-gradient(135deg, #D96725, #D95323, #1F2226, #D96725)"
+              : "transparent",
+            backgroundSize: "300% 300%",
+          }}
+          animate={hovered ? { backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] } : {}}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+        />
+        <TiltCard className="h-full relative z-10">
+          <div className="group h-full rounded-xl border border-[#1F2226]/10 bg-white p-7 shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden flex flex-col items-start justify-between">
+            <div>
+              <div className="mb-6 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-[#D96725]/10 text-[#D96725] transition-all group-hover:bg-[#D96725] group-hover:text-white">
+                <c.icon className="h-5 w-5" />
+              </div>
+              <h3 className="text-xl font-bold text-[#1F2226] uppercase tracking-tight group-hover:text-[#D96725] transition-colors">{c.title}</h3>
+              <p className="mt-3 text-xs text-[#5C6470] leading-relaxed font-medium">{c.body}</p>
+            </div>
+
+            <div className="mt-8 w-full flex items-center justify-between border-t border-[#1F2226]/5 pt-4 text-[10px] font-mono text-[#5C6470]">
+              <span>Surface 0{i + 1}</span>
+              <span className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity text-[#D96725] font-bold">
+                EXPLORE <ArrowUpRight className="h-3.5 w-3.5" />
+              </span>
+            </div>
+          </div>
+        </TiltCard>
+      </div>
+    </motion.div>
+  );
+}
+
+// Metric card with animated counter
+function MetricCard({
+  stat,
+  isActive,
+  onClick,
+}: {
+  stat: { label: string; val: string; numericTarget: number | null; suffix: string; prefix?: string; desc: string };
+  isActive: boolean;
+  onClick: () => void;
+}) {
+  const { count, ref: counterRef } = useCounter(stat.numericTarget ?? 0, 1.8);
+  return (
+    <motion.div
+      whileHover={{ y: -6, scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      onClick={onClick}
+      className={`cursor-pointer rounded-xl border p-6 transition-all duration-300 ${
+        isActive
+          ? "border-[#D96725] bg-white shadow-lg shadow-[#D96725]/10"
+          : "border-[#1F2226]/10 bg-transparent hover:border-[#1F2226]/30 hover:bg-white/60"
+      }`}
+    >
+      <span className="text-[10px] font-mono uppercase tracking-widest text-[#5C6470]">{stat.label}</span>
+      <h4 className="mt-3 text-3xl font-extrabold text-[#1F2226] tracking-tight font-mono" ref={counterRef as React.RefObject<HTMLHeadingElement>}>
+        {stat.numericTarget !== null
+          ? `${stat.prefix ?? ""}${count}${stat.suffix}`
+          : stat.val}
+      </h4>
+      <p className="mt-2 text-xs text-[#5C6470] leading-relaxed">{stat.desc}</p>
+    </motion.div>
+  );
+}
+
 // Fine-Tuning visualizer node detail mapping
 const tuningNodes = [
   { name: "Ingestion", step: "01", label: "Dataset Curation", desc: "Ingesting codebases, logs, & enterprise docs into high-quality instruction formats.", loss: "0.98", throughput: "1.2M tokens" },
@@ -116,6 +219,37 @@ const tuningNodes = [
   { name: "DPO Alignment", step: "04", label: "Direct Preference Tuning", desc: "Aligning models directly to developer preferences using pairwise target comparison.", loss: "0.08", throughput: "420K tokens" },
   { name: "Deployment", step: "05", label: "Edge Compilation", desc: "Quantizing weights to FP16/INT8 formats and deploying on low-latency Vercel Edge endpoints.", loss: "0.08", throughput: "Ready" }
 ];
+
+// Animated SVG pipeline connector
+function PipelineConnector({ activeNode: _activeNode }: { activeNode: number }) {
+
+  return (
+    <svg className="absolute top-1/2 left-0 right-0 w-full h-2 -translate-y-1/2 hidden md:block z-0" style={{ overflow: "visible" }}>
+      <defs>
+        <linearGradient id="pipelineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#D96725" stopOpacity="0" />
+          <stop offset="40%" stopColor="#D96725" stopOpacity="1" />
+          <stop offset="60%" stopColor="#D95323" stopOpacity="1" />
+          <stop offset="100%" stopColor="#D95323" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      {/* Static base line */}
+      <line x1="4%" y1="1" x2="96%" y2="1" stroke="rgba(31,34,38,0.08)" strokeWidth="1.5" />
+      {/* Animated moving gradient dash */}
+      <motion.line
+        x1="4%"
+        y1="1"
+        x2="96%"
+        y2="1"
+        stroke="url(#pipelineGrad)"
+        strokeWidth="2"
+        strokeDasharray="60 200"
+        animate={{ strokeDashoffset: [200, -200] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+      />
+    </svg>
+  );
+}
 
 function Home() {
   const [logs, setLogs] = useState<string[]>([terminalLogs[0], terminalLogs[1]]);
@@ -167,7 +301,7 @@ function Home() {
       "    )",
       "    return response"
     ];
-    
+
     let currentLine = 0;
     const interval = setInterval(() => {
       if (currentLine < lines.length) {
@@ -184,9 +318,9 @@ function Home() {
 
   return (
     <div ref={containerRef} className="relative min-h-screen bg-[#F5F3EF] text-[#1F2226] font-sans selection:bg-[#D96725] selection:text-white overflow-hidden">
-      
+
       {/* Scroll Progress Indicator */}
-      <motion.div 
+      <motion.div
         className="fixed top-[68px] left-0 right-0 h-1 bg-[#D96725] z-50 origin-left"
         style={{ scaleX: scrollYProgress }}
       />
@@ -207,27 +341,51 @@ function Home() {
 
       {/* HERO SECTION */}
       <section className="relative min-h-[95vh] flex items-center justify-center pt-16 pb-24 overflow-hidden border-b border-[#1F2226]/10">
+        {/* Grid overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(31,34,38,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(31,34,38,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] z-0" />
-        
-        {/* Organic background gradients */}
-        <div className="absolute -left-48 top-12 w-[600px] h-[600px] rounded-full bg-[#D96725]/5 blur-[120px] pointer-events-none" />
-        <div className="absolute -right-48 bottom-12 w-[600px] h-[600px] rounded-full bg-[#400D09]/5 blur-[120px] pointer-events-none" />
+
+        {/* Animated gradient mesh blobs */}
+        <motion.div
+          className="absolute -left-48 top-12 w-[700px] h-[700px] rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(217,103,37,0.12) 0%, transparent 70%)", filter: "blur(80px)" }}
+          animate={{ scale: [1, 1.15, 1], x: [0, 30, 0], y: [0, -20, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute -right-48 bottom-12 w-[700px] h-[700px] rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(64,13,9,0.1) 0%, transparent 70%)", filter: "blur(80px)" }}
+          animate={{ scale: [1, 1.2, 1], x: [0, -30, 0], y: [0, 20, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        />
+        <motion.div
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(ellipse, rgba(217,103,37,0.05) 0%, transparent 70%)", filter: "blur(60px)" }}
+          animate={{ opacity: [0.5, 1, 0.5], scaleX: [1, 1.3, 1] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        />
 
         <div className="relative mx-auto max-w-7xl px-6 w-full z-10">
           <div className="grid gap-16 lg:grid-cols-12 lg:items-center">
-            
+
             {/* LEFT COLUMN: HERO HEADLINE */}
-            <motion.div 
-              style={{ scale: headerScale, opacity: heroOpacity }} 
+            <motion.div
+              style={{ scale: headerScale, opacity: heroOpacity }}
               className="lg:col-span-7 flex flex-col items-start text-left"
             >
-              {/* startup India badge */}
-              <motion.div 
+              {/* startup India badge — shimmer glow */}
+              <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-[#1F2226]/10 bg-white/70 px-4.5 py-2 text-xs font-bold uppercase tracking-wider text-[#1F2226] shadow-sm backdrop-blur-sm"
+                className="mb-8 relative inline-flex items-center gap-2.5 rounded-full border border-[#D96725]/30 bg-white/80 px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#1F2226] shadow-sm backdrop-blur-sm overflow-hidden"
               >
+                {/* shimmer sweep */}
+                <motion.span
+                  className="absolute inset-0 pointer-events-none"
+                  style={{ background: "linear-gradient(105deg, transparent 40%, rgba(217,103,37,0.18) 50%, transparent 60%)", backgroundSize: "200% 100%" }}
+                  animate={{ backgroundPosition: ["-100% 0%", "200% 0%"] }}
+                  transition={{ duration: 2.4, repeat: Infinity, ease: "linear", repeatDelay: 1.5 }}
+                />
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D96725] opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-[#D96725]"></span>
@@ -235,47 +393,57 @@ function Home() {
                 Startup India Recognized · LLP Vol.01
               </motion.div>
 
-              {/* Massive Display Title */}
-              <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-5xl font-extrabold leading-[0.95] tracking-tighter md:text-7xl lg:text-8xl text-[#1F2226] uppercase"
-              >
-                Specialized <span className="text-[#D96725]">AI</span>.<br />
-                Extreme precision.
-              </motion.h1>
+              {/* Word-by-word staggered headline */}
+              <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter md:text-7xl lg:text-8xl text-[#1F2226] uppercase">
+                {["Specialized", "AI.", "Extreme", "precision."].map((word, wi) => (
+                  <motion.span
+                    key={wi}
+                    className={`inline-block mr-[0.2em] overflow-hidden ${word === "AI." ? "text-[#D96725]" : ""}`}
+                    style={{ verticalAlign: "bottom" }}
+                  >
+                    <motion.span
+                      className="inline-block"
+                      initial={{ y: "110%", opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ duration: 0.6, delay: 0.1 + wi * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      {word}
+                    </motion.span>
+                    {wi === 1 && <br />}
+                  </motion.span>
+                ))}
+              </h1>
 
-              <motion.p 
+              <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
                 className="mt-8 max-w-xl text-lg text-[#5C6470] font-medium leading-relaxed"
               >
                 We construct specialized models via proprietary fine-tuning pipelines and code customized plugins that provide massive leverage. Built at the speed of the current AI meta.
               </motion.p>
-              
-              <motion.div 
+
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
+                transition={{ duration: 0.6, delay: 0.72 }}
                 className="mt-10 flex flex-wrap gap-4"
               >
-                <Button asChild size="xl" className="bg-[#1F2226] hover:bg-[#D96725] text-white rounded-none border border-transparent transition-all duration-300 font-bold px-8 shadow-md">
+                <Button asChild size="lg" className="bg-[#1F2226] hover:bg-[#D96725] text-white rounded-none border border-transparent transition-all duration-300 font-bold px-8 shadow-md">
                   <Link to="/contact">
                     Establish Connection <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
-                <Button asChild size="xl" variant="outline" className="border-[#1F2226]/20 bg-transparent hover:bg-[#1F2226]/5 text-[#1F2226] rounded-none font-bold px-8">
+                <Button asChild size="lg" variant="outline" className="border-[#1F2226]/20 bg-transparent hover:bg-[#1F2226]/5 text-[#1F2226] rounded-none font-bold px-8">
                   <a href="#visualizer">Explore Telemetry</a>
                 </Button>
               </motion.div>
 
               {/* Cognitive stats line */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
+                transition={{ duration: 0.8, delay: 0.85 }}
                 className="mt-16 grid grid-cols-3 gap-8 border-t border-[#1F2226]/10 pt-8 w-full max-w-lg"
               >
                 <div>
@@ -293,19 +461,28 @@ function Home() {
               </motion.div>
             </motion.div>
 
-            {/* RIGHT COLUMN: INTERACTIVE 3D HUD / CONSOLE */}
-            <motion.div 
+            {/* RIGHT COLUMN: GLASSMORPHISM TERMINAL CARD */}
+            <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
               className="lg:col-span-5"
             >
               <TiltCard className="w-full">
-                <div className="relative overflow-hidden rounded-xl border border-[#1F2226]/10 bg-white p-7 shadow-xl hover:shadow-2xl transition-all duration-300">
-                  <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[#D96725] to-[#D95323]" />
-                  
+                {/* Glow ring */}
+                <motion.div
+                  className="absolute -inset-[2px] rounded-2xl pointer-events-none z-0"
+                  style={{ background: "linear-gradient(135deg, rgba(217,103,37,0.35), rgba(217,83,35,0.2), rgba(31,34,38,0.1))", filter: "blur(4px)" }}
+                  animate={{ opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <div className="relative z-10 overflow-hidden rounded-xl border border-white/20 bg-white/30 backdrop-blur-xl p-7 shadow-2xl"
+                  style={{ backdropFilter: "blur(20px)", background: "rgba(255,255,255,0.45)", boxShadow: "0 8px 60px rgba(217,103,37,0.12), 0 2px 20px rgba(31,34,38,0.08), inset 0 1px 0 rgba(255,255,255,0.8)" }}
+                >
+                  <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#D96725] to-transparent opacity-80" />
+
                   {/* HUD Header */}
-                  <div className="mb-6 flex items-center justify-between border-b border-[#1F2226]/5 pb-4">
+                  <div className="mb-6 flex items-center justify-between border-b border-[#1F2226]/8 pb-4">
                     <div className="flex items-center gap-2.5">
                       <div className="flex gap-1.5">
                         <span className="h-3 w-3 rounded-full bg-[#1F2226]" />
@@ -314,21 +491,27 @@ function Home() {
                       </div>
                       <span className="ml-1 text-xs font-mono font-bold tracking-wide text-[#5C6470]">eolarity-core-engine</span>
                     </div>
-                    <div className="flex items-center gap-1.5 rounded-md bg-[#D96725]/10 px-2.5 py-1 text-[10px] font-mono font-bold text-[#D96725]">
+                    <div className="flex items-center gap-1.5 rounded-md bg-[#D96725]/15 border border-[#D96725]/25 px-2.5 py-1 text-[10px] font-mono font-bold text-[#D96725]">
                       <span className="h-1.5 w-1.5 animate-ping rounded-full bg-[#D96725]" />
                       MONITOR
                     </div>
                   </div>
 
                   {/* Terminal Logger */}
-                  <div className="min-h-[200px] font-mono text-xs text-[#1F2226]/90 space-y-2 bg-[#F9F8F6] p-4 rounded-lg border border-[#1F2226]/5">
+                  <div className="min-h-[200px] font-mono text-xs text-[#1F2226]/90 space-y-2 bg-white/40 backdrop-blur-sm p-4 rounded-lg border border-[#1F2226]/8">
                     {logs.map((log, idx) => (
-                      <div key={idx} className="flex items-start gap-1.5">
+                      <motion.div
+                        key={`${idx}-${log.slice(0, 12)}`}
+                        initial={{ opacity: 0, x: -6 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="flex items-start gap-1.5"
+                      >
                         <span className="text-[#D96725] select-none font-bold">&gt;</span>
                         <span className={log.startsWith("SUCCESS") || log.startsWith("OK") ? "text-[#D95323] font-bold" : ""}>
                           {log}
                         </span>
-                      </div>
+                      </motion.div>
                     ))}
                     <div className="flex items-center gap-1 animate-pulse">
                       <span className="text-[#D96725] font-bold">&gt;</span>
@@ -342,7 +525,7 @@ function Home() {
                       <span>SYSTEM CONVERGENCE</span>
                       <span className="text-[#D96725]">99.8% READY</span>
                     </div>
-                    <div className="flex h-12 items-end gap-1 bg-[#F9F8F6] p-2 rounded border border-[#1F2226]/5">
+                    <div className="flex h-12 items-end gap-1 bg-white/30 p-2 rounded border border-[#1F2226]/8">
                       {[30, 48, 25, 65, 80, 50, 92, 70, 85, 100, 60, 75, 45, 88, 95].map((h, i) => (
                         <motion.div
                           key={i}
@@ -352,7 +535,7 @@ function Home() {
                           className="w-full rounded-t-sm transition-all duration-300"
                           style={{
                             backgroundColor: i === 9 ? "#D96725" : "rgba(31, 34, 38, 0.15)",
-                            boxShadow: i === 9 ? "0 0 8px rgba(217, 103, 37, 0.6)" : "none"
+                            boxShadow: i === 9 ? "0 0 10px rgba(217, 103, 37, 0.7)" : "none"
                           }}
                         />
                       ))}
@@ -364,32 +547,41 @@ function Home() {
 
           </div>
         </div>
+
+        {/* Scroll-down indicator */}
+        <motion.a
+          href="#metrics"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-[#5C6470] hover:text-[#D96725] transition-colors cursor-pointer z-20"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.4, duration: 0.6 }}
+        >
+          <span className="text-[9px] font-mono font-bold uppercase tracking-[0.2em]">Scroll</span>
+          <motion.div
+            animate={{ y: [0, 5, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <ChevronDown className="h-5 w-5" />
+          </motion.div>
+        </motion.a>
       </section>
 
       {/* METRIC SECTIONS WITH TABS */}
-      <section className="relative py-20 border-b border-[#1F2226]/10">
+      <section id="metrics" className="relative py-20 border-b border-[#1F2226]/10 scroll-mt-20">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-6 md:grid-cols-4">
             {[
-              { label: "Systems Operational", val: "181+", desc: "Integrated cognitive micro-services ready to execute workflows." },
-              { label: "Edge Latency", val: "< 14ms", desc: "Hyper-optimized routing structures pushing prompt speeds to maximum." },
-              { label: "Compliance & Safety", val: "100%", desc: "Clean architecture registered officially with Startup India." },
-              { label: "Meta Adoption", val: "Live", desc: "Evolving state logic matching LLM capability gain curves in real-time." },
+              { label: "Systems Operational", val: "181+", numericTarget: 181, suffix: "+", desc: "Integrated cognitive micro-services ready to execute workflows." },
+              { label: "Edge Latency", val: "< 14ms", numericTarget: 14, suffix: "ms", prefix: "< ", desc: "Hyper-optimized routing structures pushing prompt speeds to maximum." },
+              { label: "Compliance & Safety", val: "100%", numericTarget: 100, suffix: "%", desc: "Clean architecture registered officially with Startup India." },
+              { label: "Meta Adoption", val: "Live", numericTarget: null, suffix: "", desc: "Evolving state logic matching LLM capability gain curves in real-time." },
             ].map((stat, i) => (
-              <motion.div
+              <MetricCard
                 key={i}
-                whileHover={{ y: -5 }}
+                stat={stat}
+                isActive={activeMetric === i}
                 onClick={() => setActiveMetric(i)}
-                className={`cursor-pointer rounded-xl border p-6 transition-all duration-300 ${
-                  activeMetric === i
-                    ? "border-[#D96725] bg-white shadow-lg"
-                    : "border-[#1F2226]/10 bg-transparent hover:border-[#1F2226]/30"
-                }`}
-              >
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[#5C6470]">{stat.label}</span>
-                <h4 className="mt-3 text-3xl font-extrabold text-[#1F2226] tracking-tight">{stat.val}</h4>
-                <p className="mt-2 text-xs text-[#5C6470] leading-relaxed">{stat.desc}</p>
-              </motion.div>
+              />
             ))}
           </div>
         </div>
@@ -398,7 +590,7 @@ function Home() {
       {/* DYNAMIC TELEMETRY INFOGRAPHIC / ACCELERATOR BANNER (NEW INFOGRAPHIC) */}
       <section id="visualizer" className="relative py-32 border-b border-[#1F2226]/10 scroll-mt-20">
         <div className="mx-auto max-w-7xl px-6">
-          
+
           <div className="text-center max-w-3xl mx-auto mb-16">
             <span className="text-xs font-mono uppercase tracking-widest text-[#D96725] font-bold">Interactive Infographics</span>
             <h2 className="mt-4 text-4xl font-extrabold tracking-tighter text-[#1F2226] uppercase md:text-5xl">
@@ -407,16 +599,16 @@ function Home() {
             <p className="mt-4 text-base text-[#5C6470] font-medium">
               Interact with our custom model fine-tuning steps or see our specialized coder plugin accelerator in real-time telemetry.
             </p>
-            
+
             {/* Infographic Selectors */}
             <div className="mt-8 inline-flex gap-2 border border-[#1F2226]/10 bg-white/70 p-1.5 rounded-lg">
-              <button 
+              <button
                 onClick={() => setActiveInfographic("finetuning")}
                 className={`px-5 py-2.5 text-xs font-bold uppercase tracking-wider rounded transition-all duration-200 ${activeInfographic === "finetuning" ? "bg-[#D96725] text-white" : "text-[#5C6470] hover:text-[#D96725]"}`}
               >
                 Model Fine-Tuning Pipeline
               </button>
-              <button 
+              <button
                 onClick={() => setActiveInfographic("ide")}
                 className={`px-5 py-2.5 text-xs font-bold uppercase tracking-wider rounded transition-all duration-200 ${activeInfographic === "ide" ? "bg-[#1F2226] text-white" : "text-[#5C6470] hover:text-[#1F2226]"}`}
               >
@@ -449,16 +641,16 @@ function Home() {
 
                     {/* Nodes Connector Graphic */}
                     <div className="my-10 relative flex flex-wrap gap-4 items-center justify-between">
-                      {/* Connecting Line */}
-                      <div className="absolute top-1/2 left-4 right-4 h-0.5 bg-[#1F2226]/5 -translate-y-1/2 hidden md:block z-0" />
-                      
+                      {/* Animated SVG connector line */}
+                      <PipelineConnector activeNode={activeTuningNode} />
+
                       {tuningNodes.map((node, index) => (
                         <button
                           key={node.name}
                           onClick={() => setActiveTuningNode(index)}
                           className={`relative z-10 flex flex-col items-center p-3 rounded-lg border transition-all duration-300 ${
-                            activeTuningNode === index 
-                              ? "bg-white border-[#D96725] shadow-md scale-105" 
+                            activeTuningNode === index
+                              ? "bg-white border-[#D96725] shadow-md scale-105"
                               : "bg-[#F9F8F6] border-[#1F2226]/10 hover:border-[#D96725]/40"
                           }`}
                         >
@@ -481,13 +673,13 @@ function Home() {
                       <div className="flex h-20 items-end gap-1.5">
                         {[1.2, 0.95, 0.8, 0.65, 0.55, 0.42, 0.35, 0.28, 0.22, 0.18, 0.14, 0.11, 0.08].map((l, i) => (
                           <div key={i} className="w-full relative group h-full flex flex-col justify-end">
-                            <motion.div 
+                            <motion.div
                               initial={{ height: 0 }}
                               animate={{ height: `${(l / 1.2) * 100}%` }}
                               transition={{ duration: 0.8, delay: i * 0.03 }}
                               className={`rounded-t-sm transition-all duration-300 w-full ${
                                 i === activeTuningNode * 2.5 || (activeTuningNode === 4 && i === 12)
-                                  ? "bg-[#D96725] shadow-[0_0_8px_rgba(217,103,37,0.5)]" 
+                                  ? "bg-[#D96725] shadow-[0_0_8px_rgba(217,103,37,0.5)]"
                                   : "bg-[#1F2226]/15"
                               }`}
                             />
@@ -497,36 +689,45 @@ function Home() {
                     </div>
                   </div>
 
-                  {/* Right Column: Telemetry Specs details */}
-                  <div className="lg:col-span-5 bg-[#F9F8F6] rounded-xl border border-[#1F2226]/8 p-6 flex flex-col justify-between">
-                    <div>
-                      <div className="flex justify-between items-center border-b border-[#1F2226]/5 pb-4 mb-4">
-                        <span className="text-xs font-mono font-bold text-[#5C6470] uppercase">Active Telemetry</span>
-                        <span className="text-[10px] font-mono font-bold bg-[#D96725]/10 text-[#D96725] px-2 py-0.5 rounded">NODE {tuningNodes[activeTuningNode].step}</span>
+                  {/* Right Column: Telemetry Specs — slides in from right on node selection */}
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeTuningNode}
+                      initial={{ opacity: 0, x: 30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                      className="lg:col-span-5 bg-[#F9F8F6] rounded-xl border border-[#1F2226]/8 p-6 flex flex-col justify-between"
+                    >
+                      <div>
+                        <div className="flex justify-between items-center border-b border-[#1F2226]/5 pb-4 mb-4">
+                          <span className="text-xs font-mono font-bold text-[#5C6470] uppercase">Active Telemetry</span>
+                          <span className="text-[10px] font-mono font-bold bg-[#D96725]/10 text-[#D96725] px-2 py-0.5 rounded">NODE {tuningNodes[activeTuningNode].step}</span>
+                        </div>
+                        <h4 className="text-2xl font-black uppercase text-[#1F2226] tracking-tight">
+                          {tuningNodes[activeTuningNode].label}
+                        </h4>
+                        <p className="mt-3 text-xs text-[#5C6470] leading-relaxed">
+                          {tuningNodes[activeTuningNode].desc}
+                        </p>
                       </div>
-                      <h4 className="text-2xl font-black uppercase text-[#1F2226] tracking-tight">
-                        {tuningNodes[activeTuningNode].label}
-                      </h4>
-                      <p className="mt-3 text-xs text-[#5C6470] leading-relaxed">
-                        {tuningNodes[activeTuningNode].desc}
-                      </p>
-                    </div>
 
-                    <div className="mt-8 space-y-4">
-                      <div className="flex justify-between items-center border-b border-[#1F2226]/5 pb-2">
-                        <span className="text-xs text-[#5C6470] font-bold">Domain Loss Metric</span>
-                        <span className="text-sm font-mono font-bold text-[#D96725]">{tuningNodes[activeTuningNode].loss} (Optimal)</span>
+                      <div className="mt-8 space-y-4">
+                        <div className="flex justify-between items-center border-b border-[#1F2226]/5 pb-2">
+                          <span className="text-xs text-[#5C6470] font-bold">Domain Loss Metric</span>
+                          <span className="text-sm font-mono font-bold text-[#D96725]">{tuningNodes[activeTuningNode].loss} (Optimal)</span>
+                        </div>
+                        <div className="flex justify-between items-center border-b border-[#1F2226]/5 pb-2">
+                          <span className="text-xs text-[#5C6470] font-bold">Throughput Ingest Rate</span>
+                          <span className="text-sm font-mono font-bold text-[#1F2226]">{tuningNodes[activeTuningNode].throughput} / sec</span>
+                        </div>
+                        <div className="flex justify-between items-center pb-2">
+                          <span className="text-xs text-[#5C6470] font-bold">Specialized Parameter Ratio</span>
+                          <span className="text-sm font-mono font-bold text-[#1F2226]">16 Rank LoRA Target</span>
+                        </div>
                       </div>
-                      <div className="flex justify-between items-center border-b border-[#1F2226]/5 pb-2">
-                        <span className="text-xs text-[#5C6470] font-bold">Throughput Ingest Rate</span>
-                        <span className="text-sm font-mono font-bold text-[#1F2226]">{tuningNodes[activeTuningNode].throughput} / sec</span>
-                      </div>
-                      <div className="flex justify-between items-center pb-2">
-                        <span className="text-xs text-[#5C6470] font-bold">Specialized Parameter Ratio</span>
-                        <span className="text-sm font-mono font-bold text-[#1F2226]">16 Rank LoRA Target</span>
-                      </div>
-                    </div>
-                  </div>
+                    </motion.div>
+                  </AnimatePresence>
                 </motion.div>
               ) : (
                 <motion.div
@@ -539,7 +740,7 @@ function Home() {
                 >
                   {/* Left Column: Visual Editor mock */}
                   <div className="lg:col-span-8 bg-[#1E1E24] text-[#EFECE5] rounded-xl border border-white/10 p-5 font-mono text-xs shadow-2xl relative">
-                    
+
                     {/* Header */}
                     <div className="flex justify-between items-center border-b border-white/5 pb-3 mb-4">
                       <div className="flex items-center gap-2">
@@ -613,7 +814,7 @@ function Home() {
       <section className="relative py-32 border-b border-[#1F2226]/10 bg-[#EFECE5]/40">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-16 lg:grid-cols-12 lg:items-center">
-            
+
             {/* Left side explanatory block */}
             <div className="lg:col-span-5">
               <span className="text-xs font-mono uppercase tracking-widest text-[#D96725] font-bold">The Core Dialectic</span>
@@ -621,19 +822,19 @@ function Home() {
                 Restraint <br />meets energy.
               </h2>
               <p className="mt-6 text-base text-[#5C6470] leading-relaxed">
-                Eolarity operates in the vital tension between structured safety and rapid action. 
+                Eolarity operates in the vital tension between structured safety and rapid action.
                 We structure architectures that don&apos;t fail under pressure, while matching the spark of GenAI innovation.
               </p>
 
               {/* Dynamic selector toggle */}
               <div className="mt-8 flex gap-2 border border-[#1F2226]/10 bg-white/70 p-1.5 rounded-lg w-fit">
-                <button 
+                <button
                   onClick={() => setActiveDialectic("charcoal")}
                   className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded transition-all duration-200 ${activeDialectic === "charcoal" ? "bg-[#1F2226] text-white" : "text-[#5C6470] hover:text-[#1F2226]"}`}
                 >
                   Charcoal Restraint
                 </button>
-                <button 
+                <button
                   onClick={() => setActiveDialectic("ember")}
                   className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded transition-all duration-200 ${activeDialectic === "ember" ? "bg-[#D96725] text-white" : "text-[#5C6470] hover:text-[#D96725]"}`}
                 >
@@ -664,7 +865,7 @@ function Home() {
                         </div>
                         <h3 className="text-2xl font-bold text-[#1F2226] uppercase tracking-tight">Charcoal Restraint</h3>
                         <p className="mt-4 text-sm text-[#5C6470] leading-relaxed max-w-xl">
-                          Silent, highly disciplined system engineering. Safe Token management structures, privacy-focused database routing, 
+                          Silent, highly disciplined system engineering. Safe Token management structures, privacy-focused database routing,
                           agnostic hosting models, robust fallback systems, and beautiful aesthetic restraints that prioritize usability and security above industry hype.
                         </p>
                         <div className="mt-8 flex gap-4 text-xs font-mono text-[#5C6470]">
@@ -694,7 +895,7 @@ function Home() {
                         </div>
                         <h3 className="text-2xl font-bold text-[#D96725] uppercase tracking-tight">Ember Energy</h3>
                         <p className="mt-4 text-sm text-[#5C6470] leading-relaxed max-w-xl">
-                          Aggressive integration of frontier cognitive layers. Custom multi-agent consensus workflows, 
+                          Aggressive integration of frontier cognitive layers. Custom multi-agent consensus workflows,
                           IDE code acceleration modules, in-house masterclasses on active model implementations, and dynamic solutions designed for immediate efficiency gains.
                         </p>
                         <div className="mt-8 flex gap-4 text-xs font-mono text-[#D96725]">
@@ -713,10 +914,10 @@ function Home() {
         </div>
       </section>
 
-      {/* CAPABILITIES (Six Surfaces of Execution) */}
+      {/* CAPABILITIES (Six Surfaces of Execution) — Bento Grid */}
       <section className="relative py-32 border-b border-[#1F2226]/10">
         <div className="mx-auto max-w-7xl px-6">
-          
+
           <div className="text-center max-w-3xl mx-auto mb-20">
             <span className="text-xs font-mono uppercase tracking-widest text-[#D96725] font-bold">Scope of Action</span>
             <h2 className="mt-4 text-4xl font-extrabold tracking-tighter text-[#1F2226] uppercase md:text-5xl lg:text-6xl">
@@ -727,37 +928,9 @@ function Home() {
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-3">
             {capabilities.map((c, i) => (
-              <motion.div
-                key={c.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.05 }}
-              >
-                <TiltCard className="h-full">
-                  <div className="group h-full rounded-xl border border-[#1F2226]/10 bg-white p-7 shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden flex flex-col items-start justify-between">
-                    <div>
-                      <div className="mb-6 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-[#D96725]/10 text-[#D96725] transition-all group-hover:bg-[#D96725] group-hover:text-white">
-                        <c.icon className="h-5 w-5" />
-                      </div>
-                      <h3 className="text-xl font-bold text-[#1F2226] uppercase tracking-tight group-hover:text-[#D96725] transition-colors">{c.title}</h3>
-                      <p className="mt-3 text-xs text-[#5C6470] leading-relaxed font-medium">{c.body}</p>
-                    </div>
-
-                    <div className="mt-8 w-full flex items-center justify-between border-t border-[#1F2226]/5 pt-4 text-[10px] font-mono text-[#5C6470]">
-                      <span>Surface 0{i + 1}</span>
-                      <span className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity text-[#D96725] font-bold">
-                        EXPLORE <ArrowUpRight className="h-3.5 w-3.5" />
-                      </span>
-                    </div>
-
-                    {/* Gradient active outline bar */}
-                    <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-[#D96725] to-transparent opacity-0 transition-all duration-300 group-hover:opacity-100" />
-                  </div>
-                </TiltCard>
-              </motion.div>
+              <CapabilityCard key={c.title} c={c} i={i} spanTwo={c.span === 2} />
             ))}
           </div>
         </div>
@@ -765,28 +938,71 @@ function Home() {
 
       {/* FOOTER CTA CONSOLE BLOCK */}
       <section className="relative py-24 mx-auto max-w-7xl px-6">
-        <div className="relative overflow-hidden rounded-2xl border border-[#1F2226]/15 bg-white p-8 md:p-16 shadow-xl">
-          {/* subtle orange energy blob */}
-          <div className="absolute -right-24 -bottom-24 w-[350px] h-[350px] rounded-full bg-[#D96725]/5 blur-3xl pointer-events-none" />
+        <div className="relative overflow-hidden rounded-2xl bg-[#1F2226] p-8 md:p-16 shadow-2xl">
 
-          <div className="relative max-w-2xl">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-3.5 py-1 text-[10px] font-mono tracking-wider text-green-700 font-bold uppercase shadow-sm">
+          {/* Glowing ember blob */}
+          <motion.div
+            className="absolute -right-24 -bottom-24 w-[500px] h-[500px] rounded-full pointer-events-none"
+            style={{ background: "radial-gradient(circle, rgba(217,103,37,0.35) 0%, rgba(217,83,35,0.15) 40%, transparent 70%)", filter: "blur(60px)" }}
+            animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute -left-32 top-0 w-[400px] h-[400px] rounded-full pointer-events-none"
+            style={{ background: "radial-gradient(circle, rgba(217,103,37,0.12) 0%, transparent 70%)", filter: "blur(80px)" }}
+            animate={{ scale: [1, 1.15, 1], x: [0, 20, 0] }}
+            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          />
+
+          {/* Floating animated particles/orbs */}
+          {[
+            { size: 4, top: "15%", left: "8%", delay: 0 },
+            { size: 3, top: "70%", left: "15%", delay: 1.5 },
+            { size: 5, top: "30%", right: "20%", delay: 0.8 },
+            { size: 3, top: "80%", right: "10%", delay: 2.2 },
+            { size: 4, top: "50%", left: "45%", delay: 1.1 },
+          ].map((orb, oi) => (
+            <motion.div
+              key={oi}
+              className="absolute rounded-full bg-[#D96725] pointer-events-none"
+              style={{ width: orb.size, height: orb.size, top: orb.top, left: (orb as any).left, right: (orb as any).right, opacity: 0.4 }}
+              animate={{ y: [0, -12, 0], opacity: [0.3, 0.7, 0.3] }}
+              transition={{ duration: 3 + oi * 0.5, repeat: Infinity, ease: "easeInOut", delay: orb.delay }}
+            />
+          ))}
+
+          <div className="relative z-10 max-w-2xl">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-3.5 py-1 text-[10px] font-mono tracking-wider text-green-400 font-bold uppercase shadow-sm">
               <span className="h-2 w-2 rounded-full bg-green-500 animate-ping" />
               SYSTEM PORT ACTIVE
             </div>
-            <h2 className="text-4xl font-extrabold tracking-tight text-[#1F2226] uppercase leading-[0.95] md:text-5xl">
+            <h2 className="text-4xl font-extrabold tracking-tight text-white uppercase leading-[0.95] md:text-5xl">
               Ready to construct with polarity?
             </h2>
-            <p className="mt-6 text-sm text-[#5C6470] leading-relaxed font-medium">
-              Submit your project layout, pipeline parameters, or organizational automation targets. 
+            <p className="mt-6 text-sm text-white/60 leading-relaxed font-medium">
+              Submit your project layout, pipeline parameters, or organizational automation targets.
               We&apos;ll compile an actionable blueprint detailing implementation strategies.
             </p>
             <div className="mt-10">
-              <Button asChild size="xl" className="glow bg-[#D96725] hover:bg-[#D95323] text-white rounded-none font-bold px-8 shadow-md">
-                <Link to="/contact">
-                  Initialize Dialogue <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                className="inline-block"
+              >
+                <Button asChild size="lg" className="relative overflow-hidden group bg-[#D96725] hover:bg-[#D95323] text-white rounded-none font-bold px-8 shadow-md shadow-[#D96725]/30">
+                  <Link to="/contact">
+                    Initialize Dialogue <ArrowRight className="ml-2 h-5 w-5" />
+                    {/* Animated underline on hover */}
+                    <motion.span
+                      className="absolute bottom-0 left-0 right-0 h-[2px] bg-white origin-left"
+                      initial={{ scaleX: 0 }}
+                      whileHover={{ scaleX: 1 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                    />
+                  </Link>
+                </Button>
+              </motion.div>
             </div>
           </div>
         </div>
