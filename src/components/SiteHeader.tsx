@@ -89,7 +89,7 @@ export function SiteHeader() {
         </nav>
 
         <motion.button
-          className="rounded-md p-2 md:hidden text-[#1F2226]"
+          className="rounded-md p-3 md:hidden text-[#1F2226]"
           onClick={() => setOpen((o) => !o)}
           aria-label="Toggle menu"
           whileTap={{ scale: 0.92 }}

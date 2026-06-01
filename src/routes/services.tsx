@@ -311,7 +311,7 @@ function ServicesPage() {
                   </span>
                 </div>
                 <h4 className="text-sm font-bold uppercase tracking-wide text-[#1F2226]">{step.label}</h4>
-                <p className="mt-2 text-xs text-[#5C6470] leading-relaxed max-w-[160px]">{step.desc}</p>
+                <p className="mt-2 text-xs text-[#5C6470] leading-relaxed md:max-w-[160px]">{step.desc}</p>
 
                 {i < processSteps.length - 1 && (
                   <motion.div
