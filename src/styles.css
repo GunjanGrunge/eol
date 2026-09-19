@@ -51,15 +51,15 @@
 :root {
   --radius: 0.5rem; /* Sleeker, high-tech rounded corners */
   
-  /* Brand beige primary backdrop */
-  --background: #F5F3EF; /* Premium high-end warm beige */
+  /* Brand Off White backdrop */
+  --background: #F2F2F2; /* Eolarity Off White */
   --foreground: #1F2226; /* Eolarity Charcoal primary text */
-  
-  /* Surface colors (Off White / Contrasting light layers) */
-  --card: #F9F8F6;
+
+  /* Surface colors */
+  --card: #FFFFFF;
   --card-foreground: #1F2226;
-  
-  --popover: #F9F8F6;
+
+  --popover: #FFFFFF;
   --popover-foreground: #1F2226;
   
   /* Brand Ember Orange */
@@ -70,7 +70,7 @@
   --secondary: #D95323;
   --secondary-foreground: #FFFFFF;
   
-  --muted: #EAE8DF;
+  --muted: #E5E5E5;
   --muted-foreground: #5C6470;
   
   --accent: #D96725;
@@ -90,7 +90,7 @@
   --chart-4: #1F2226;
   --chart-5: #F9F8F6;
   
-  --sidebar: #F5F3EF;
+  --sidebar: #F2F2F2;
   --sidebar-foreground: #1F2226;
   --sidebar-primary: #D96725;
   --sidebar-primary-foreground: #FFFFFF;
@@ -110,7 +110,7 @@
       rgba(64, 13, 9, 0.03) 0%, /* Deep Maroon */
       transparent 60%
     ),
-    linear-gradient(180deg, #F5F3EF 0%, #FAF9F6 100%);
+    linear-gradient(180deg, #F2F2F2 0%, #FAFAFA 100%);
      
   --gradient-orb: radial-gradient(
     circle,

@@ -1,15 +1,14 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import logo from "@/assets/eolarity-logo-horizontal.png";
+import logo from "@/assets/eolarity-logo-dark-bg.png";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 
 const links = [
-  { to: "/", label: "Home" },
-  { to: "/services", label: "Services" },
-  { to: "/products", label: "Products" },
-  { to: "/about", label: "About" },
+  { to: "/services", label: "Capabilities" },
+  { to: "/products", label: "Work" },
+  { to: "/about", label: "Company" },
 ];
 
 export function SiteHeader() {
@@ -28,9 +27,9 @@ export function SiteHeader() {
   return (
     <motion.header
       animate={{
-        backgroundColor: scrolled ? "rgba(255,255,255,0.85)" : "rgba(245,243,239,0.7)",
-        borderBottomColor: scrolled ? "rgba(31,34,38,0.12)" : "rgba(31,34,38,0.06)",
-        boxShadow: scrolled ? "0 1px 24px rgba(31,34,38,0.06)" : "none",
+        backgroundColor: scrolled ? "rgba(31,34,38,0.96)" : "rgba(31,34,38,0.85)",
+        borderBottomColor: scrolled ? "rgba(242,242,242,0.14)" : "rgba(242,242,242,0.08)",
+        boxShadow: scrolled ? "0 1px 24px rgba(0,0,0,0.25)" : "none",
       }}
       transition={{ duration: 0.3 }}
       className="sticky top-0 z-50 border-b backdrop-blur-xl"
@@ -48,14 +47,13 @@ export function SiteHeader() {
 
         <nav className="hidden items-center gap-8 md:flex">
           {links.map((l) => {
-            const isActive = l.to === "/" ? location.pathname === "/" : location.pathname.startsWith(l.to);
+            const isActive = location.pathname.startsWith(l.to);
             return (
               <Link
                 key={l.to}
                 to={l.to}
-                className="relative text-sm font-medium text-[#5C6470] transition-colors hover:text-[#1F2226]"
-                activeProps={{ className: "text-[#1F2226]" }}
-                activeOptions={{ exact: l.to === "/" }}
+                className="relative text-sm font-medium text-[#B8BCC2] transition-colors hover:text-white"
+                activeProps={{ className: "text-white" }}
               >
                 {l.label}
                 {/* Animated underline */}
@@ -67,7 +65,7 @@ export function SiteHeader() {
                 />
                 {/* Hover underline */}
                 <motion.span
-                  className="absolute -bottom-1 left-0 right-0 h-[2px] bg-[#1F2226]/20 origin-left"
+                  className="absolute -bottom-1 left-0 right-0 h-[2px] bg-white/20 origin-left"
                   initial={{ scaleX: 0 }}
                   whileHover={{ scaleX: isActive ? 0 : 1 }}
                   transition={{ duration: 0.2 }}
@@ -75,7 +73,11 @@ export function SiteHeader() {
               </Link>
             );
           })}
-          <Button asChild size="sm" className="group relative overflow-hidden bg-[#1F2226] hover:bg-[#D96725] text-white rounded-none font-bold border-0 transition-colors duration-300">
+          <Button
+            asChild
+            size="sm"
+            className="group relative overflow-hidden bg-[#D96725] hover:bg-[#D95323] text-white rounded-none font-bold border-0 transition-colors duration-300"
+          >
             <Link to="/contact">
               <motion.span
                 className="absolute inset-0 bg-white/10"
@@ -83,13 +85,13 @@ export function SiteHeader() {
                 whileHover={{ x: "100%" }}
                 transition={{ duration: 0.35 }}
               />
-              Contact us
+              Book a consultation
             </Link>
           </Button>
         </nav>
 
         <motion.button
-          className="rounded-md p-3 md:hidden text-[#1F2226]"
+          className="rounded-md p-3 md:hidden text-white"
           onClick={() => setOpen((o) => !o)}
           aria-label="Toggle menu"
           whileTap={{ scale: 0.92 }}
@@ -115,7 +117,7 @@ export function SiteHeader() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="overflow-hidden border-t border-[#1F2226]/8 bg-white/95 md:hidden"
+            className="overflow-hidden border-t border-white/10 bg-[#1F2226] md:hidden"
           >
             <nav className="mx-auto flex max-w-7xl flex-col gap-1 px-6 py-4">
               {links.map((l, i) => (
@@ -128,17 +130,26 @@ export function SiteHeader() {
                   <Link
                     to={l.to}
                     onClick={() => setOpen(false)}
-                    className="block rounded-md px-3 py-2 text-sm font-medium text-[#5C6470] hover:bg-[#F5F3EF] hover:text-[#1F2226] transition-colors"
-                    activeProps={{ className: "text-[#1F2226] bg-[#F5F3EF]" }}
-                    activeOptions={{ exact: l.to === "/" }}
+                    className="block rounded-md px-3 py-2 text-sm font-medium text-[#B8BCC2] hover:bg-white/5 hover:text-white transition-colors"
+                    activeProps={{ className: "text-white bg-white/5" }}
                   >
                     {l.label}
                   </Link>
                 </motion.div>
               ))}
-              <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: links.length * 0.05 }}>
-                <Button asChild size="sm" className="mt-2 w-full bg-[#1F2226] hover:bg-[#D96725] text-white rounded-none font-bold border-0 transition-colors">
-                  <Link to="/contact" onClick={() => setOpen(false)}>Contact us</Link>
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: links.length * 0.05 }}
+              >
+                <Button
+                  asChild
+                  size="sm"
+                  className="mt-2 w-full bg-[#D96725] hover:bg-[#D95323] text-white rounded-none font-bold border-0 transition-colors"
+                >
+                  <Link to="/contact" onClick={() => setOpen(false)}>
+                    Book a consultation
+                  </Link>
                 </Button>
               </motion.div>
             </nav>
