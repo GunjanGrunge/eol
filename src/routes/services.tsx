@@ -1,38 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useRef } from "react";
-import {
-  BrainCircuit,
-  PenLine,
-  Microscope,
-  GitBranch,
-  Lightbulb,
-  ArrowRight,
-  ArrowUpRight,
-  Search,
-  Cpu,
-  Hammer,
-  Rocket,
-  TrendingUp,
-} from "lucide-react";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useInView,
-} from "framer-motion";
+import { ArrowRight, Settings, Triangle, Box } from "lucide-react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { AbstractPanel } from "@/components/AbstractPanel";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "Services — Eolarity Innovations LLP" },
+      { title: "Capabilities — Eolarity Innovations LLP" },
       {
         name: "description",
         content:
-          "Custom AI solutions, content production, research, consulting and solutioning around the current GenAI meta.",
+          "We combine strategy, product thinking, and engineering to turn your highest-value opportunities into reliable technology.",
       },
-      { property: "og:title", content: "Services — Eolarity Innovations LLP" },
-      { property: "og:description", content: "AI solutions, content, research and consulting." },
+      { property: "og:title", content: "Capabilities — Eolarity Innovations LLP" },
+      { property: "og:description", content: "The right systems for real-world progress." },
       { property: "og:url", content: "/services" },
     ],
     links: [{ rel: "canonical", href: "/services" }],
@@ -40,328 +22,217 @@ export const Route = createFileRoute("/services")({
   component: ServicesPage,
 });
 
-const services = [
+const capabilities = [
   {
-    icon: BrainCircuit,
-    title: "AI Solutions",
-    body: "End-to-end GenAI builds — from problem framing to production. Agents, RAG pipelines, custom models and integrations.",
-    bullets: ["Custom LLM workflows", "Agentic systems", "RAG & data pipelines", "Production deployment"],
-    glow: "rgba(217,103,37,0.18)",
+    n: "01",
+    title: "AI Strategy & Enablement",
+    body: "Find the opportunities worth pursuing, align your team, and build a practical route forward.",
   },
   {
-    icon: PenLine,
-    title: "Content Production",
-    body: "AI-assisted content systems that scale without losing voice — for marketing, education or product.",
-    bullets: ["Content engines", "Editorial workflows", "Multi-modal assets"],
-    glow: "rgba(217,103,37,0.14)",
+    n: "02",
+    title: "AI Products & Agents",
+    body: "Create useful AI experiences people can trust and adopt.",
   },
   {
-    icon: Microscope,
-    title: "Research",
-    body: "Focused applied research on emerging models, techniques and the current meta — translated into something you can ship.",
-    bullets: ["Model evaluation", "Capability deep-dives", "Prototyping"],
-    glow: "rgba(217,103,37,0.16)",
+    n: "03",
+    title: "Automation & Integrations",
+    body: "Connect the work, systems, and decisions that slow your team down.",
   },
   {
-    icon: GitBranch,
-    title: "Meta-Aware Solutioning",
-    body: "Solutions designed around what's working right now in the AI ecosystem — not yesterday's stack.",
-    bullets: ["Current-stack architecture", "Vendor-agnostic design", "Future-proof patterns"],
-    glow: "rgba(217,103,37,0.14)",
-  },
-  {
-    icon: Lightbulb,
-    title: "Consulting",
-    body: "Strategic guidance for teams adopting GenAI — workshops, audits and a clear roadmap.",
-    bullets: ["GenAI strategy", "Stack & vendor audits", "Team enablement"],
-    glow: "rgba(217,103,37,0.16)",
+    n: "04",
+    title: "Data & Knowledge Systems",
+    body: "Build trustworthy information foundations for better answers and action.",
   },
 ];
 
-const marqueeItems = [
-  "Model Fine-Tuning", "Agentic Systems", "RAG Pipelines", "LLM Evaluation",
-  "IDE Plugins", "Applied Research", "GenAI Strategy", "Edge Deployment",
-  "Multi-Agent Consensus", "Vector Stores", "Content Engines", "DPO Alignment",
+const process = [
+  {
+    n: "01",
+    title: "Diagnose",
+    body: "Understand your goals, challenges, and constraints to find what really matters.",
+  },
+  {
+    n: "02",
+    title: "Design",
+    body: "Shape the right solution — from strategy to a clear plan, with measurable outcomes.",
+  },
+  {
+    n: "03",
+    title: "Deliver",
+    body: "Build, integrate, and support for real-world impact, not just prototypes.",
+  },
 ];
 
-const processSteps = [
-  { icon: Search, step: "01", label: "Discovery", desc: "Deep audit of your stack, goals, and the current AI meta." },
-  { icon: Cpu, step: "02", label: "Architecture", desc: "Vendor-agnostic system design built for your exact constraints." },
-  { icon: Hammer, step: "03", label: "Build", desc: "Rapid iteration with custom fine-tuning and agent pipelines." },
-  { icon: Rocket, step: "04", label: "Deploy", desc: "Production-grade rollout on low-latency edge infrastructure." },
-  { icon: TrendingUp, step: "05", label: "Optimize", desc: "Continuous telemetry monitoring and capability updates." },
+const approach = [
+  {
+    icon: Settings,
+    title: "Useful by design",
+    body: "Solving real problems with practical, elegant solutions.",
+  },
+  {
+    icon: Triangle,
+    title: "Grounded in the work",
+    body: "Shaped by real users, real constraints, real outcomes.",
+  },
+  {
+    icon: Box,
+    title: "Ready to scale",
+    body: "From pilot to production, with sustainability in mind.",
+  },
 ];
-
-function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  const rotateX = useSpring(useMotionValue(0), { damping: 25, stiffness: 180 });
-  const rotateY = useSpring(useMotionValue(0), { damping: 25, stiffness: 180 });
-
-  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
-    const rect = e.currentTarget.getBoundingClientRect();
-    rotateX.set(((e.clientY - rect.top - rect.height / 2) / rect.height) * -14);
-    rotateY.set(((e.clientX - rect.left - rect.width / 2) / rect.width) * 14);
-  }
-  function handleMouseLeave() { rotateX.set(0); rotateY.set(0); }
-
-  return (
-    <motion.div
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      className={`relative ${className}`}
-    >
-      <div style={{ transform: "translateZ(20px)", transformStyle: "preserve-3d" }} className="h-full w-full">
-        {children}
-      </div>
-    </motion.div>
-  );
-}
-
-const headline = "Custom GenAI work, end to end.".split(" ");
 
 function ServicesPage() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const processRef = useRef<HTMLDivElement>(null);
-  const heroInView = useInView(heroRef, { once: true, margin: "-80px" });
-  const processInView = useInView(processRef, { once: true, margin: "-80px" });
-
   return (
-    <div className="min-h-screen bg-[#F5F3EF] text-[#1F2226]">
-
+    <div className="bg-[#F2F2F2] text-[#1F2226]">
       {/* HERO */}
-      <section className="relative mx-auto max-w-7xl px-6 pt-24 pb-16 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(31,34,38,0.07)_1px,transparent_1px)] bg-[size:28px_28px] pointer-events-none" />
-        <div className="absolute -left-32 top-0 w-[500px] h-[500px] rounded-full bg-[#D96725]/5 blur-[100px] pointer-events-none" />
-
-        <div ref={heroRef} className="relative max-w-3xl">
+      <section className="relative overflow-hidden bg-[#1F2226] text-white">
+        <div className="mx-auto grid max-w-7xl gap-12 px-6 pt-16 pb-24 lg:grid-cols-12">
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.4 }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#1F2226]/10 bg-white/70 px-4 py-1.5 text-[10px] font-mono font-bold uppercase tracking-widest text-[#5C6470] backdrop-blur-sm"
+            initial={false}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-7"
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-[#D96725] animate-pulse" />
-            Services
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#D96725]">
+              Capabilities
+            </span>
+            <h1 className="mt-4 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl">
+              The right systems for real-world progress.
+            </h1>
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-[#B8BCC2]">
+              We combine strategy, product thinking, and engineering to turn your highest-value
+              opportunities into reliable technology.
+            </p>
+          </motion.div>
+          <motion.div
+            initial={false}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="hidden lg:col-span-5 lg:block"
+          >
+            <AbstractPanel variant="target" className="aspect-[4/3] w-full" />
           </motion.div>
 
-          <h1 className="text-5xl font-extrabold uppercase tracking-tighter leading-[0.95] md:text-6xl lg:text-7xl">
-            {headline.map((word, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                animate={heroInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.1 + i * 0.07 }}
-                className="inline-block mr-[0.25em]"
-              >
-                {word === "end" || word === "end." ? (
-                  <span className="text-[#D96725]">{word}</span>
-                ) : word}
-              </motion.span>
-            ))}
-          </h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-6 max-w-xl text-base text-[#5C6470] font-medium leading-relaxed"
-          >
-            We pick the right tools for what you&apos;re building — not what&apos;s loudest. Then we ship it.
-          </motion.p>
-        </div>
-      </section>
-
-      {/* MARQUEE TICKER */}
-      <div className="relative overflow-hidden border-y border-[#1F2226]/8 bg-white/40 py-3 select-none">
-        <motion.div
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
-          className="flex gap-10 whitespace-nowrap"
-        >
-          {[...marqueeItems, ...marqueeItems].map((item, i) => (
-            <span key={i} className="flex items-center gap-3 text-[11px] font-mono font-bold uppercase tracking-widest text-[#5C6470]">
-              <span className="h-1 w-1 rounded-full bg-[#D96725]" />
-              {item}
-            </span>
-          ))}
-        </motion.div>
-      </div>
-
-      {/* SERVICE CARDS */}
-      <section className="mx-auto max-w-7xl px-6 py-24">
-        <div className="grid gap-6 md:grid-cols-2">
-          {services.map((s, i) => (
-            <motion.div
-              key={s.title}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-            >
-              <TiltCard className="h-full">
-                <motion.div
-                  className="group relative h-full overflow-hidden rounded-2xl border border-[#1F2226]/10 bg-white p-8"
-                  initial={{ boxShadow: "0 2px 8px rgba(31,34,38,0.06), 0 1px 2px rgba(31,34,38,0.04)" }}
-                  whileHover={{
-                    boxShadow: `0 24px 64px ${s.glow}, 0 8px 24px ${s.glow}, 0 2px 8px rgba(31,34,38,0.06)`,
-                  }}
-                  transition={{ duration: 0.35, ease: "easeOut" }}
-                >
-                  {/* Gradient wash on hover */}
-                  <motion.div
-                    className="absolute inset-0 pointer-events-none"
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1 }}
-                    transition={{ duration: 0.4 }}
-                    style={{ background: "linear-gradient(135deg, rgba(217,103,37,0.04) 0%, transparent 55%)" }}
-                  />
-                  {/* Animated top border */}
-                  <motion.div
-                    className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#D96725] to-transparent"
-                    initial={{ opacity: 0, scaleX: 0.4 }}
-                    whileHover={{ opacity: 1, scaleX: 1 }}
-                    transition={{ duration: 0.35 }}
-                  />
-
-                  {/* Icon with animated ring */}
-                  <div className="relative mb-6 inline-flex">
-                    {/* Pulsing ring on hover */}
-                    <motion.span
-                      className="absolute inset-0 rounded-xl bg-[#D96725]/20"
-                      initial={{ scale: 1, opacity: 0 }}
-                      whileHover={{ scale: 1.55, opacity: 0 }}
-                      transition={{ duration: 0.5, ease: "easeOut" }}
-                    />
-                    <motion.div
-                      className="relative flex h-14 w-14 items-center justify-center rounded-xl bg-[#D96725]/10 text-[#D96725]"
-                      whileHover={{ backgroundColor: "#D96725", color: "#ffffff", scale: 1.08 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    >
-                      <s.icon className="h-6 w-6" />
-                    </motion.div>
-                  </div>
-
-                  <h3 className="text-xl font-bold uppercase tracking-tight text-[#1F2226] group-hover:text-[#D96725] transition-colors duration-300">{s.title}</h3>
-                  <p className="mt-3 text-sm text-[#5C6470] leading-relaxed">{s.body}</p>
-
-                  <ul className="mt-5 space-y-2">
-                    {s.bullets.map((b, bi) => (
-                      <motion.li
-                        key={b}
-                        className="flex items-center gap-2 text-sm"
-                        initial={{ opacity: 0, x: -6 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.06 + bi * 0.05 }}
-                      >
-                        <span className="h-1.5 w-1.5 rounded-full bg-[#D96725] flex-shrink-0" />
-                        <span className="text-[#5C6470] font-medium">{b}</span>
-                      </motion.li>
-                    ))}
-                  </ul>
-
-                  <div className="mt-6 flex items-center justify-between border-t border-[#1F2226]/5 pt-4 text-[10px] font-mono text-[#5C6470]">
-                    <span>Surface 0{i + 1}</span>
-                    <motion.span
-                      className="flex items-center gap-1 text-[#D96725] font-bold"
-                      initial={{ opacity: 0, x: -4 }}
-                      whileHover={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      EXPLORE <ArrowUpRight className="h-3 w-3" />
-                    </motion.span>
-                  </div>
-                </motion.div>
-              </TiltCard>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* HOW WE WORK */}
-      <section ref={processRef} className="border-t border-[#1F2226]/8 bg-white/40 py-24">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#D96725]">Process</span>
-            <h2 className="mt-4 text-4xl font-extrabold uppercase tracking-tighter text-[#1F2226] md:text-5xl">
-              How we work.
-            </h2>
-            <p className="mt-4 text-sm text-[#5C6470] leading-relaxed">
-              Every engagement follows the same disciplined execution architecture — tailored to your meta.
-            </p>
-          </div>
-
-          <div className="relative flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-            <div className="absolute top-10 left-[10%] right-[10%] h-px bg-[#1F2226]/8 hidden md:block" />
-
-            {processSteps.map((step, i) => (
+          <div className="lg:col-span-12 mt-4 grid gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+            {capabilities.map((c) => (
               <motion.div
-                key={step.step}
-                initial={{ opacity: 0, y: 30 }}
-                animate={processInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="relative z-10 flex flex-col items-center text-center md:flex-1"
+                key={c.n}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5 }}
+                className="flex flex-col justify-between bg-[#1F2226] p-6"
               >
-                <div className="mb-4 relative">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-[#1F2226]/10 bg-white shadow-sm">
-                    <step.icon className="h-7 w-7 text-[#D96725]" />
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-extrabold text-[#D96725]">{c.n}</span>
+                    <span className="h-px flex-1 bg-white/15" />
                   </div>
-                  <span className="absolute -top-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-[#1F2226] text-[9px] font-mono font-black text-white">
-                    {step.step}
-                  </span>
+                  <h3 className="mt-4 text-lg font-bold leading-snug">{c.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-[#B8BCC2]">{c.body}</p>
                 </div>
-                <h4 className="text-sm font-bold uppercase tracking-wide text-[#1F2226]">{step.label}</h4>
-                <p className="mt-2 text-xs text-[#5C6470] leading-relaxed md:max-w-[160px]">{step.desc}</p>
-
-                {i < processSteps.length - 1 && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={processInView ? { opacity: 1 } : {}}
-                    transition={{ delay: i * 0.1 + 0.4 }}
-                    className="absolute top-10 -right-4 hidden md:block"
-                  >
-                    <ArrowRight className="h-4 w-4 text-[#D96725]/40" />
-                  </motion.div>
-                )}
+                <Link
+                  to="/contact"
+                  className="mt-6 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-white/70 transition-colors hover:text-[#D96725]"
+                >
+                  Learn more <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="relative overflow-hidden rounded-2xl bg-[#1F2226] px-8 py-16 md:px-16 shadow-2xl">
-            <div className="absolute -right-24 -top-24 w-[400px] h-[400px] rounded-full bg-[#D96725]/10 blur-[80px] pointer-events-none" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(217,103,37,0.04)_1px,transparent_1px)] bg-[size:28px_28px] pointer-events-none" />
+      {/* NOT SURE CTA */}
+      <section className="mx-auto -mt-16 max-w-4xl px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="rounded-sm border border-[#1F2226]/10 bg-white p-8 shadow-[0_20px_60px_-20px_rgba(31,34,38,0.2)] md:p-10"
+        >
+          <span className="h-px w-8 bg-[#D96725] block mb-4" />
+          <h2 className="text-2xl font-extrabold tracking-tight md:text-3xl">
+            Not sure where to begin?
+          </h2>
+          <p className="mt-3 max-w-lg text-sm leading-relaxed text-[#5C6470]">
+            Tell us what you&rsquo;re exploring. We&rsquo;ll help you find the right starting point
+            — no pressure, just a useful conversation.
+          </p>
+          <Button
+            asChild
+            size="lg"
+            className="mt-6 rounded-none bg-[#D96725] font-bold text-white hover:bg-[#D95323]"
+          >
+            <Link to="/contact">
+              Start a conversation <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+        </motion.div>
+      </section>
 
-            <div className="relative max-w-2xl">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#D96725]">Ready to build?</span>
-              <h2 className="mt-4 text-4xl font-extrabold uppercase tracking-tight text-white leading-[0.95] md:text-5xl">
-                Start a conversation.
-              </h2>
-              <p className="mt-6 text-sm text-white/60 leading-relaxed">
-                Submit your project parameters — we&apos;ll compile an actionable blueprint detailing the exact implementation path.
+      {/* HOW WE WORK */}
+      <section className="bg-[#1F2226] py-24 text-white mt-20">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="grid gap-10 lg:grid-cols-12 lg:items-start">
+            <div className="lg:col-span-4">
+              <span className="h-px w-8 bg-[#D96725] block mb-4" />
+              <h2 className="text-3xl font-extrabold tracking-tight">How we work</h2>
+              <p className="mt-4 max-w-xs text-sm leading-relaxed text-[#B8BCC2]">
+                A focused, collaborative process to turn complex challenges into real progress.
               </p>
-              <div className="mt-10">
-                <Button asChild size="lg" className="group relative overflow-hidden bg-[#D96725] hover:bg-[#D95323] text-white rounded-none font-bold px-8 border-0">
-                  <Link to="/contact">
-                    <motion.span
-                      className="absolute inset-0 bg-white/10"
-                      initial={{ x: "-100%" }}
-                      whileHover={{ x: "100%" }}
-                      transition={{ duration: 0.4 }}
-                    />
-                    Start a conversation <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
+            </div>
+
+            <div className="lg:col-span-8 flex flex-col gap-8 sm:flex-row sm:items-start sm:gap-6">
+              {process.map((step, i) => (
+                <div key={step.n} className="flex flex-1 items-start gap-4">
+                  <motion.div
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="flex-1"
+                  >
+                    <span className="text-2xl font-extrabold text-[#D96725]">{step.n}</span>
+                    <h3 className="mt-3 text-lg font-bold">{step.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-[#B8BCC2]">{step.body}</p>
+                  </motion.div>
+                  {i < process.length - 1 && (
+                    <span className="hidden pt-2 text-2xl text-white/20 sm:block">&rang;</span>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
+      {/* APPROACH STRIP */}
+      <section className="bg-white py-16">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mb-10">
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#D96725]">
+              Our approach
+            </span>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight">
+              Built for adoption, not applause.
+            </h2>
+          </div>
+          <div className="grid gap-10 sm:grid-cols-3">
+            {approach.map((a) => (
+              <div key={a.title} className="flex items-start gap-4">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#D96725]/10 text-[#D96725]">
+                  <a.icon className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="font-bold">{a.title}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-[#5C6470]">{a.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

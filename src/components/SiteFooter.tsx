@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import logo from "@/assets/eolarity-logo-horizontal.png";
+import logo from "@/assets/eolarity-logo-header.png";
 import startupIndia from "@/assets/startupindia.png";
 import madeInIndia from "@/assets/makeinindia.png";
 import { motion } from "framer-motion";
@@ -13,12 +13,13 @@ const socials = [
 
 export function SiteFooter() {
   return (
-    <footer className="mt-32 border-t border-[#1F2226]/10 bg-[#F5F3EF]">
+    <footer className="mt-32 border-t border-white/10 bg-[#1F2226]">
       {/* Animated gradient divider */}
       <motion.div
         className="h-px w-full"
         style={{
-          background: "linear-gradient(90deg, transparent 0%, #1F2226 25%, #D96725 50%, #1F2226 75%, transparent 100%)",
+          background:
+            "linear-gradient(90deg, transparent 0%, #D96725 25%, #D95323 50%, #D96725 75%, transparent 100%)",
           backgroundSize: "200% 100%",
         }}
         animate={{ backgroundPosition: ["0% 0%", "200% 0%"] }}
@@ -34,27 +35,30 @@ export function SiteFooter() {
             whileHover={{ scale: 1.03 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
           />
-          <p className="mt-4 max-w-sm text-sm text-[#5C6470] leading-relaxed">
-            Custom GenAI solutions, in-house products, and consulting built at
-            the speed of the current meta.
+          <p className="mt-4 max-w-sm text-sm text-[#9BA1AA] leading-relaxed">
+            Eolarity designs practical AI, automation, and digital products that help ambitious
+            teams move with confidence.
           </p>
 
-          <div className="mt-6 flex flex-wrap items-center gap-6">
-            <motion.img
-              src={startupIndia}
-              alt="Registered under Startup India"
-              className="h-16 w-auto object-contain"
+          <div className="mt-6 flex flex-wrap items-center gap-4">
+            <motion.div
+              className="rounded-md bg-white px-3 py-2"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            />
-            <motion.img
-              src={madeInIndia}
-              alt="Made in India"
-              className="h-16 w-auto object-contain"
-              style={{ mixBlendMode: "multiply" }}
+            >
+              <img
+                src={startupIndia}
+                alt="Registered under Startup India"
+                className="h-10 w-auto object-contain"
+              />
+            </motion.div>
+            <motion.div
+              className="rounded-md bg-white px-3 py-2"
               animate={{ scale: [1, 1.04, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
-            />
+            >
+              <img src={madeInIndia} alt="Made in India" className="h-10 w-auto object-contain" />
+            </motion.div>
           </div>
 
           {/* Social icons */}
@@ -64,7 +68,7 @@ export function SiteFooter() {
                 key={s.label}
                 href={s.href}
                 aria-label={s.label}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-[#1F2226]/10 bg-white text-[#5C6470] hover:border-[#D96725]/40 hover:text-[#D96725] transition-colors"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-[#9BA1AA] hover:border-[#D96725]/40 hover:text-[#D96725] transition-colors"
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
@@ -76,18 +80,18 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <h4 className="mb-4 text-xs font-bold uppercase tracking-widest text-[#1F2226]">Explore</h4>
-          <ul className="space-y-2.5 text-sm text-[#5C6470]">
+          <h4 className="mb-4 text-xs font-bold uppercase tracking-widest text-white">Explore</h4>
+          <ul className="space-y-2.5 text-sm text-[#9BA1AA]">
             {[
-              { to: "/services", label: "Services" },
-              { to: "/products", label: "Products" },
-              { to: "/about", label: "About" },
+              { to: "/services", label: "Capabilities" },
+              { to: "/products", label: "Work" },
+              { to: "/about", label: "Company" },
               { to: "/contact", label: "Contact" },
             ].map((l) => (
               <li key={l.to}>
                 <Link
                   to={l.to}
-                  className="group inline-flex items-center gap-1 hover:text-[#1F2226] transition-colors"
+                  className="group inline-flex items-center gap-1 hover:text-white transition-colors"
                 >
                   {l.label}
                   <motion.span
@@ -104,10 +108,13 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <h4 className="mb-4 text-xs font-bold uppercase tracking-widest text-[#1F2226]">Reach out</h4>
-          <ul className="space-y-2.5 text-sm text-[#5C6470]">
+          <h4 className="mb-4 text-xs font-bold uppercase tracking-widest text-white">Reach out</h4>
+          <ul className="space-y-2.5 text-sm text-[#9BA1AA]">
             <li>
-              <a href="mailto:hello@eolarity.com" className="hover:text-[#D96725] transition-colors">
+              <a
+                href="mailto:hello@eolarity.com"
+                className="hover:text-[#D96725] transition-colors"
+              >
                 hello@eolarity.com
               </a>
             </li>
@@ -117,18 +124,20 @@ export function SiteFooter() {
           <div className="mt-8">
             <div className="flex items-center gap-2 mb-2">
               <span className="h-1.5 w-1.5 rounded-full bg-[#D96725] animate-pulse" />
-              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#5C6470]">Status</span>
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#9BA1AA]">
+                Status
+              </span>
             </div>
-            <p className="text-xs text-[#5C6470]">All systems operational</p>
+            <p className="text-xs text-[#9BA1AA]">All systems operational</p>
           </div>
         </div>
       </div>
 
-      <div className="border-t border-[#1F2226]/8">
-        <div className="mx-auto max-w-7xl px-6 py-6 flex flex-wrap items-center justify-between gap-4 text-xs text-[#5C6470]">
+      <div className="border-t border-white/10">
+        <div className="mx-auto max-w-7xl px-6 py-6 flex flex-wrap items-center justify-between gap-4 text-xs text-[#9BA1AA]">
           <span>© {new Date().getFullYear()} Eolarity Innovations LLP. All rights reserved.</span>
           <span className="font-mono text-[10px] uppercase tracking-widest">
-            v2.0 · Speed of the current meta
+            Practical technology. Measurable progress.
           </span>
         </div>
       </div>
