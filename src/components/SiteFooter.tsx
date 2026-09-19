@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import logo from "@/assets/eolarity-logo-dark-bg.png";
+import logo from "@/assets/eolarity-logo-header.png";
 import startupIndia from "@/assets/startupindia.png";
 import madeInIndia from "@/assets/makeinindia.png";
 import { motion } from "framer-motion";
