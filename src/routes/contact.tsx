@@ -116,7 +116,7 @@ function ContactPage() {
       <section className="relative overflow-hidden bg-[#1F2226] text-white">
         <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-12 lg:py-24">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="lg:col-span-6"
@@ -136,7 +136,7 @@ function ContactPage() {
             </p>
           </motion.div>
           <motion.div
-            initial={{ opacity: 0, scale: 0.97 }}
+            initial={false}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.15 }}
             className="hidden lg:col-span-6 lg:block"
@@ -153,7 +153,7 @@ function ContactPage() {
             {sent ? (
               <motion.div
                 key="success"
-                initial={{ opacity: 0, scale: 0.96 }}
+                initial={false}
                 animate={{ opacity: 1, scale: 1 }}
                 className="flex min-h-[380px] flex-col items-center justify-center rounded-sm border border-[#1F2226]/10 bg-white p-12 text-center"
               >
@@ -168,7 +168,7 @@ function ContactPage() {
               <motion.form
                 key="form"
                 onSubmit={onSubmit}
-                initial={{ opacity: 0, y: 16 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 className="rounded-sm border border-[#1F2226]/10 bg-white p-7 md:p-9"
                 noValidate

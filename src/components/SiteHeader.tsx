@@ -25,14 +25,10 @@ export function SiteHeader() {
   }, []);
 
   return (
-    <motion.header
-      animate={{
-        backgroundColor: scrolled ? "rgba(31,34,38,0.96)" : "rgba(31,34,38,0.85)",
-        borderBottomColor: scrolled ? "rgba(242,242,242,0.14)" : "rgba(242,242,242,0.08)",
-        boxShadow: scrolled ? "0 1px 24px rgba(0,0,0,0.25)" : "none",
-      }}
-      transition={{ duration: 0.3 }}
-      className="sticky top-0 z-50 border-b backdrop-blur-xl"
+    <header
+      className={`sticky top-0 z-50 border-b border-white/10 bg-[#1F2226]/90 backdrop-blur-xl transition-shadow duration-300 ${
+        scrolled ? "shadow-[0_1px_24px_rgba(0,0,0,0.25)]" : ""
+      }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link to="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
@@ -156,6 +152,6 @@ export function SiteHeader() {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </header>
   );
 }

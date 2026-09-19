@@ -65,7 +65,7 @@ function Home() {
       <section className="relative overflow-hidden bg-[#1F2226] text-white">
         <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-12 lg:items-center lg:py-28">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="lg:col-span-7"
@@ -104,7 +104,7 @@ function Home() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.97 }}
+            initial={false}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.15 }}
             className="lg:col-span-5"
