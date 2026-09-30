@@ -1,3 +1,4 @@
+import './_group.css';
 import { useState } from 'react';
 import {
   ArrowDownRight,
@@ -7,7 +8,11 @@ import {
   Check,
   Code2,
   GitBranch,
+  Layers3,
   Menu,
+  Network,
+  Orbit,
+  Workflow,
   X,
 } from 'lucide-react';
 
@@ -40,17 +45,89 @@ function SectionLabel({ children, dark = false }: { children: string; dark?: boo
   );
 }
 
+function ArrowCta({ children, href }: { children: string; href: string }) {
+  return (
+    <a
+      className="arrow-link inline-flex items-center gap-3 border-b border-current pb-2 text-sm font-semibold transition-colors hover:text-[#D96725] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D96725]"
+      href={href}
+    >
+      {children}
+      <ArrowUpRight size={16} strokeWidth={1.8} />
+    </a>
+  );
+}
+
+function SystemSketch() {
+  return (
+    <div className="relative isolate min-h-[400px] overflow-hidden border border-white/10 bg-[#25292e] p-6 sm:min-h-[470px] sm:p-9">
+      <div className="absolute inset-0 -z-10 opacity-[.16]" aria-hidden="true">
+        <div className="h-full w-full" style={{ backgroundImage: 'linear-gradient(rgba(242,242,242,.18) 1px, transparent 1px), linear-gradient(90deg, rgba(242,242,242,.18) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+      </div>
+      <div className="flex items-center justify-between">
+        <span className="mono text-[9px] uppercase tracking-[.16em] text-white/45">A working system</span>
+        <span className="flex items-center gap-2 mono text-[9px] uppercase tracking-[.14em] text-[#e68a52]">
+          <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[#e68a52]" />
+          designed to do
+        </span>
+      </div>
+      <div className="relative mx-auto mt-12 grid max-w-[490px] grid-cols-[1fr_74px_1fr] items-center gap-y-8 sm:mt-[68px] sm:grid-cols-[1fr_100px_1fr]">
+        <div className="col-start-1 row-start-1 flex min-h-[76px] items-center gap-3 border border-white/15 bg-[#1F2226] px-3 sm:px-4">
+          <div className="grid h-8 w-8 shrink-0 place-items-center border border-white/15 text-white/75"><Layers3 size={15} /></div>
+          <div>
+            <div className="mono text-[8px] uppercase tracking-[.16em] text-white/40">01 / context</div>
+            <div className="mt-1 text-[11px] font-medium text-white/90 sm:text-xs">Your real-world inputs</div>
+          </div>
+        </div>
+        <div className="col-start-3 row-start-1 flex min-h-[76px] items-center gap-3 border border-white/15 bg-[#1F2226] px-3 sm:px-4">
+          <div className="grid h-8 w-8 shrink-0 place-items-center border border-white/15 text-white/75"><Network size={15} /></div>
+          <div>
+            <div className="mono text-[8px] uppercase tracking-[.16em] text-white/40">02 / reasoning</div>
+            <div className="mt-1 text-[11px] font-medium text-white/90 sm:text-xs">Models &amp; logic</div>
+          </div>
+        </div>
+        <div className="col-start-1 row-start-3 flex min-h-[76px] items-center gap-3 border border-white/15 bg-[#1F2226] px-3 sm:px-4">
+          <div className="grid h-8 w-8 shrink-0 place-items-center border border-white/15 text-white/75"><Workflow size={15} /></div>
+          <div>
+            <div className="mono text-[8px] uppercase tracking-[.16em] text-white/40">03 / orchestration</div>
+            <div className="mt-1 text-[11px] font-medium text-white/90 sm:text-xs">Tools &amp; workflows</div>
+          </div>
+        </div>
+        <div className="col-start-3 row-start-3 flex min-h-[76px] items-center gap-3 border border-[#d96725]/45 bg-[#1F2226] px-3 sm:px-4">
+          <div className="grid h-8 w-8 shrink-0 place-items-center bg-[#d96725] text-[#1F2226]"><Check size={16} strokeWidth={2.5} /></div>
+          <div>
+            <div className="mono text-[8px] uppercase tracking-[.16em] text-[#e68a52]">04 / outcome</div>
+            <div className="mt-1 text-[11px] font-medium text-white/90 sm:text-xs">Useful work, shipped</div>
+          </div>
+        </div>
+        <div className="relative col-start-2 row-start-1 row-span-3 flex h-full items-center justify-center">
+          <div className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-white/20" />
+          <div className="absolute left-0 top-[24%] h-px w-full bg-white/20" />
+          <div className="absolute left-0 bottom-[24%] h-px w-full bg-white/20" />
+          <div className="relative grid h-14 w-14 place-items-center rounded-full border border-[#d96725]/60 bg-[#25292e] text-[#e37c3e]">
+            <Orbit className="orbit absolute inset-1.5" size={44} strokeWidth={0.65} />
+            <span className="h-2 w-2 rounded-full bg-[#d96725]" />
+          </div>
+        </div>
+      </div>
+      <div className="mt-10 flex items-center justify-between border-t border-white/10 pt-4">
+        <span className="mono text-[9px] text-white/40">COMPOSABLE BY DESIGN</span>
+        <span className="mono text-[9px] text-white/40">HUMAN OVERSIGHT INCLUDED</span>
+      </div>
+    </div>
+  );
+}
+
 function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <div className="page-grain min-h-[100dvh] overflow-hidden">
+    <div className="page-grain min-h-screen min-h-[100dvh] overflow-hidden">
       <header className="sticky top-0 z-30 border-b border-black/[.08] bg-[#f5f3ee]/95 backdrop-blur-md">
         <div className="mx-auto flex h-[76px] max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-14">
           <a href="#top" aria-label="Eolarity Innovations home" onClick={closeMenu} className="shrink-0">
-            <img className="h-auto w-[178px] sm:w-[205px]" src="/brand-assets/eolarity-horizontal.png" alt="Eolarity Innovations LLP" />
+            <img className="h-auto w-[178px] sm:w-[205px]" src="/__mockup/images/eolarity-horizontal.png" alt="Eolarity Innovations LLP" />
           </a>
           <nav aria-label="Main navigation" className="hidden items-center gap-8 md:flex">
             {navItems.map((item) => (
@@ -86,59 +163,50 @@ function Home() {
       </header>
 
       <main>
-        <section id="top" className="relative overflow-hidden bg-[#D96725] text-[#1F2226]">
-          <div className="mx-auto max-w-[1440px] px-6 sm:px-10 lg:px-14">
-            <div className="grid min-h-[48px] grid-cols-2 items-center gap-x-4 gap-y-2 border-b border-black/25 py-3 mono text-[8px] uppercase tracking-[.1em] sm:grid-cols-3 sm:text-[9px]">
-              <span>Field notes / 001</span>
-              <span className="hidden text-center sm:block">AI, applied with judgement</span>
-              <span className="text-right">Independent practice · India</span>
-            </div>
-
-            <div className="grid gap-11 py-12 sm:py-16 lg:min-h-[570px] lg:grid-cols-[1.25fr_.75fr] lg:items-center lg:gap-10 lg:py-12">
-              <div className="relative z-10">
-                <div className="eyebrow flex items-center gap-3 text-black/65">
-                  <span className="h-px w-7 bg-[#400D09]" />
-                  Engineering for the work in front of you
-                </div>
-                <h1 className="display mt-7 max-w-[800px] text-[clamp(3.5rem,8vw,7rem)] font-semibold leading-[.98] tracking-[-.09em]">
-                  Make the<br />
-                  <span className="font-serif font-normal italic tracking-[-.045em] text-[#f5f3ee]">useful</span> thing.
-                </h1>
-                <p className="mt-7 max-w-[500px] text-[15px] leading-[1.75] text-black/75 sm:text-[17px]">
-                  We help organisations make sense of AI, then engineer the parts that make a real difference. We also build products of our own.
-                </p>
-                <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
-                  <a href="#work" className="inline-flex items-center gap-4 bg-[#1F2226] px-4 py-4 text-[11px] font-semibold text-[#f2f2f2] transition-colors hover:bg-[#400D09] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1F2226]">
-                    See how we work <ArrowRight size={16} />
-                  </a>
-                  <a href="#contact" className="inline-flex items-center gap-2 text-[11px] font-semibold transition-colors hover:text-[#400D09] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1F2226]">
-                    Start a conversation <ArrowDownRight size={15} />
-                  </a>
-                </div>
+        <section id="top" className="relative bg-[#1F2226] text-[#f2f2f2]">
+          <div className="absolute left-0 top-0 h-full w-[6px] bg-[#D96725]" />
+          <div className="mx-auto grid max-w-[1440px] gap-12 px-6 pb-16 pt-16 sm:px-10 sm:pb-20 sm:pt-20 lg:grid-cols-[1.02fr_.98fr] lg:items-center lg:gap-14 lg:px-14 lg:pb-24 lg:pt-[92px]">
+            <div className="relative z-10">
+              <div className="reveal eyebrow flex items-center gap-3 text-white/55">
+                <span className="h-px w-7 bg-[#D96725]" />
+                Independent AI &amp; engineering
               </div>
-
-              <aside aria-label="Our working principles" className="relative isolate min-h-[285px] rotate-[2deg] overflow-hidden bg-[#1F2226] p-6 text-[#f2f2f2] shadow-[13px_13px_0_rgba(64,13,9,.28)] sm:min-h-[330px] sm:p-8">
-                <div className="flex items-center justify-between mono text-[9px] uppercase tracking-[.1em] text-white/50">
-                  <span>Shop note</span><span>01 — 04</span>
-                </div>
-                <p className="display relative z-10 mt-11 text-[clamp(2.5rem,5vw,4.25rem)] font-medium leading-[.9] tracking-[-.08em]">
-                  Less<br />promise.<br /><span className="text-[#D96725]">More proof.</span>
-                </p>
-                <div className="relative z-10 mt-6 border-t border-white/20 pt-4 mono text-[9px] leading-relaxed text-white/55">
-                  <p>Architecture in mind.</p>
-                  <p>A useful thing in hand.</p>
-                </div>
-                <span aria-hidden="true" className="pointer-events-none absolute -bottom-16 right-3 -z-10 font-serif text-[220px] leading-none text-[#D96725]/15">E</span>
-              </aside>
+              <h1 className="display reveal reveal-delay-1 mt-7 max-w-[720px] text-[clamp(3.2rem,7.25vw,6.9rem)] font-medium leading-[.96]">
+                AI that earns<br />
+                <span className="text-[#e47737]">its place</span> in the work.
+              </h1>
+              <p className="reveal reveal-delay-2 mt-7 max-w-[490px] text-[15px] leading-[1.8] text-white/65 sm:text-[17px]">
+                We help organisations make sense of AI, then engineer the parts that make a real difference. We also build products of our own.
+              </p>
+              <div className="reveal reveal-delay-3 mt-9 flex flex-wrap items-center gap-x-8 gap-y-5">
+                <a href="#work" className="inline-flex items-center gap-3 bg-[#D96725] px-5 py-4 text-[12px] font-semibold text-[#1F2226] transition-colors hover:bg-[#ef8c4b]">
+                  See how we work <ArrowRight size={16} />
+                </a>
+                <a href="#contact" className="inline-flex items-center gap-2 text-[12px] font-medium text-white/75 transition-colors hover:text-white">
+                  Start a conversation <ArrowDownRight size={15} />
+                </a>
+              </div>
+              <div className="mt-14 flex items-center gap-4 border-t border-white/15 pt-5">
+                <img src="/brand-assets/eolarity-mark.png" alt="" className="h-7 w-7 object-contain opacity-80" />
+                <span className="mono text-[9px] uppercase leading-relaxed tracking-[.13em] text-white/45">Architecture in mind.<br className="sm:hidden" /> A useful thing in hand.</span>
+              </div>
             </div>
-
-            <div className="grid grid-cols-2 gap-x-4 gap-y-3 border-t border-black/25 py-4 mono text-[8px] uppercase tracking-[.1em] sm:grid-cols-4 sm:text-[9px]">
-              <span>01 — Strategy</span>
-              <span>02 — Product</span>
-              <span>03 — Engineering</span>
-              <a className="inline-flex items-center gap-2 justify-self-end transition-colors hover:text-[#400D09] sm:col-auto" href="#work">
-                See the work <ArrowDownRight size={13} />
-              </a>
+            <div className="reveal reveal-delay-2 relative">
+              <div className="absolute -right-4 -top-5 z-10 hidden bg-[#D96725] px-3 py-2 mono text-[9px] uppercase tracking-[.15em] text-[#1F2226] sm:block">Ideas → working systems</div>
+              <SystemSketch />
+              <div className="mt-3 flex justify-between mono text-[8px] uppercase tracking-[.12em] text-white/35">
+                <span>Strategy · Product · Engineering</span>
+                <span>IN / OUT</span>
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-white/10">
+            <div className="mx-auto flex max-w-[1440px] flex-wrap items-center gap-x-8 gap-y-3 px-6 py-4 sm:px-10 lg:px-14">
+              <span className="eyebrow text-white/35">Built for real conditions</span>
+              <span className="h-3 w-px bg-white/20" />
+              <span className="text-[10px] text-white/60">Human judgement stays in the loop</span>
+              <span className="hidden h-3 w-px bg-white/20 sm:block" />
+              <span className="text-[10px] text-white/60">The right model, not a model for everything</span>
             </div>
           </div>
         </section>
@@ -365,7 +433,7 @@ function Home() {
       <footer className="bg-[#1F2226] px-6 pb-8 text-[#f2f2f2] sm:px-10 lg:px-14">
         <div className="mx-auto flex max-w-[1290px] flex-col gap-6 border-t border-white/15 pt-7 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex items-center gap-4">
-            <img src="/brand-assets/eolarity-inverted.png" alt="Eolarity Innovations LLP" className="h-auto w-[190px] sm:w-[210px]" />
+            <img src="/__mockup/images/eolarity-inverted.png" alt="Eolarity Innovations LLP" className="h-auto w-[190px] sm:w-[210px]" />
           </div>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-[10px] text-white/45">
             <span>AI innovation &amp; engineering</span>
@@ -378,8 +446,8 @@ function Home() {
   );
 }
 
-function App() {
+function Current() {
   return <Home />;
 }
 
-export default App;
+export { Current };
