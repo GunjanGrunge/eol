@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --font-sans: var(--app-font-sans);
+  --font-serif: var(--app-font-serif);
+  --font-mono: var(--app-font-mono);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --background: 40 20% 96%;
+  --foreground: 216 9% 14%;
+  --border: 30 9% 84%;
+  --input: 30 9% 84%;
+  --card: 40 20% 96%;
+  --card-foreground: 216 9% 14%;
+  --popover: 40 20% 96%;
+  --popover-foreground: 216 9% 14%;
+  --primary: 20 69% 50%;
+  --primary-foreground: 40 20% 96%;
+  --secondary: 216 9% 14%;
+  --secondary-foreground: 40 20% 96%;
+  --muted: 36 11% 91%;
+  --muted-foreground: 218 7% 43%;
+  --accent: 20 69% 50%;
+  --accent-foreground: 40 20% 96%;
+  --destructive: 0 68% 47%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 20 69% 50%;
+  --chart-1: 20 69% 50%;
+  --chart-2: 216 9% 14%;
+  --chart-3: 6 76% 37%;
+  --chart-4: 36 11% 67%;
+  --chart-5: 216 7% 53%;
+  --sidebar: 40 20% 96%;
+  --sidebar-foreground: 216 9% 14%;
+  --sidebar-border: 30 9% 84%;
+  --sidebar-primary: 20 69% 50%;
+  --sidebar-primary-foreground: 40 20% 96%;
+  --sidebar-accent: 36 11% 91%;
+  --sidebar-accent-foreground: 216 9% 14%;
+  --radius: 0.35rem;
+  --app-font-sans: 'Inter', sans-serif;
+  --app-font-serif: Georgia, serif;
+  --app-font-mono: 'SFMono-Regular', Consolas, monospace;
+  --ink: #1f2226;
+  --ember: #d96725;
+  --terra: #d95323;
+  --maroon: #400d09;
+  --paper: #f2f2f2;
+  --paper-warm: #f5f3ee;
+  --line: rgba(31, 34, 38, .15);
+}
+
+.dark {
+  --background: 216 9% 14%;
+  --foreground: 40 20% 96%;
+  --border: 216 7% 27%;
+  --input: 216 7% 27%;
+  --card: 216 9% 17%;
+  --card-foreground: 40 20% 96%;
+  --popover: 216 9% 17%;
+  --popover-foreground: 40 20% 96%;
+  --primary: 20 69% 50%;
+  --primary-foreground: 40 20% 96%;
+  --secondary: 216 7% 25%;
+  --secondary-foreground: 40 20% 96%;
+  --muted: 216 7% 25%;
+  --muted-foreground: 36 9% 69%;
+  --accent: 20 69% 50%;
+  --accent-foreground: 40 20% 96%;
+  --destructive: 0 63% 40%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 20 69% 50%;
+  --chart-1: 20 69% 50%;
+  --chart-2: 40 20% 96%;
+  --chart-3: 6 76% 48%;
+  --chart-4: 36 11% 67%;
+  --chart-5: 216 7% 53%;
+  --sidebar: 216 9% 14%;
+  --sidebar-foreground: 40 20% 96%;
+  --sidebar-border: 216 7% 27%;
+  --sidebar-primary: 20 69% 50%;
+  --sidebar-primary-foreground: 40 20% 96%;
+  --sidebar-accent: 216 7% 25%;
+  --sidebar-accent-foreground: 40 20% 96%;
+}
+
+@layer base {
+  * { @apply border-border; }
+  html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    margin: 0;
+    background: var(--paper-warm);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection { background: #d96725; color: #f2f2f2; }
+  a { color: inherit; }
+}
+
+.display { font-family: 'Space Grotesk', 'Inter', sans-serif; letter-spacing: -.055em; }
+.eyebrow { font: 600 10px/1.2 'Inter', sans-serif; letter-spacing: .18em; text-transform: uppercase; }
+.mono { font-family: 'SFMono-Regular', Consolas, monospace; letter-spacing: .025em; }
+.page-grain::after {
+  content: '';
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  opacity: .035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.3'/%3E%3C/svg%3E");
+}
+.reveal { animation: rise-in .75s cubic-bezier(.2,.7,.2,1) both; }
+.reveal-delay-1 { animation-delay: .1s; }
+.reveal-delay-2 { animation-delay: .2s; }
+.reveal-delay-3 { animation-delay: .3s; }
+@keyframes rise-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes orbit { to { transform: rotate(360deg); } }
+@keyframes pulse-dot { 0%,100% { opacity: .4; transform: scale(.85); } 50% { opacity: 1; transform: scale(1); } }
+.orbit { animation: orbit 42s linear infinite; transform-origin: center; }
+.pulse-dot { animation: pulse-dot 2.8s ease-in-out infinite; }
+.nav-link { position: relative; }
+.nav-link::after { content: ''; position: absolute; height: 1px; background: var(--ember); inset-inline: 0; bottom: -6px; transform: scaleX(0); transform-origin: left; transition: transform .25s ease; }
+.nav-link:hover::after, .nav-link:focus-visible::after { transform: scaleX(1); }
+.arrow-link svg { transition: transform .25s ease; }
+.arrow-link:hover svg { transform: translate(3px,-3px); }
+.service-card { transition: background-color .3s ease, color .3s ease, transform .3s ease; }
+.service-card:hover { transform: translateY(-4px); }
+.service-card:hover .service-index { color: var(--ember); }
+.mobile-menu { animation: rise-in .22s ease both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
