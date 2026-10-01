@@ -260,8 +260,13 @@ function Unexpected() {
               <p>A rough idea, a stubborn workflow or an AI decision you’re not sure about. We’re interested in the real version.</p>
             </div>
             <div className="contact-hold">
-              <span>Contact details<br />coming soon <ArrowUpRight size={17} /></span>
-              <p>We’re preparing the right way to get in touch. No form here until we can respond to it.</p>
+              <a
+                href="mailto:support@eolarityinnovations.com"
+                style={{ color: 'inherit', textDecoration: 'none' }}
+              >
+                support@eolarityinnovations.com <ArrowUpRight size={17} />
+              </a>
+              <p>Write to us directly with your brief, questions, or ideas.</p>
             </div>
           </div>
           <div className="contact-bottomline"><span>START WITH THE WORK.</span><span>THEN MAKE IT BETTER.</span></div>

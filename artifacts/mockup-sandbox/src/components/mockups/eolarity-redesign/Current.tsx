@@ -421,10 +421,13 @@ function Home() {
               </p>
             </div>
             <div className="md:pb-2">
-              <span className="inline-flex cursor-default items-center gap-3 border border-white/25 px-5 py-4 text-xs font-semibold text-white/70">
-                Contact details coming soon <ArrowUpRight size={15} className="text-[#D96725]" />
-              </span>
-              <p className="mt-3 max-w-[240px] text-[10px] leading-[1.6] text-white/40">We’re preparing the right way to get in touch. No form here until we can respond to it.</p>
+              <a
+                href="mailto:support@eolarityinnovations.com"
+                className="inline-flex items-center gap-3 bg-[#D96725] px-6 py-4 text-xs font-semibold text-[#1F2226] transition-colors hover:bg-[#e47737] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D96725]"
+              >
+                support@eolarityinnovations.com <ArrowUpRight size={16} className="text-[#1F2226]" />
+              </a>
+              <p className="mt-3 max-w-[280px] text-[11px] leading-[1.6] text-white/50">Write to us directly with your brief, questions, or ideas.</p>
             </div>
           </div>
         </section>
