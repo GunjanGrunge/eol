@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ArrowDownRight,
   ArrowRight,
@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 
 const navItems = [
-  { label: 'What we do', href: '#work' },
+  { label: 'Services', href: '#services' },
   { label: 'How we think', href: '#approach' },
   { label: 'Open by nature', href: '#ecosystem' },
   { label: 'About', href: '#about' },
@@ -31,6 +31,49 @@ const ownedProduct = [
   'We learn in the open, and share where it helps',
 ];
 
+const serviceGroups = [
+  {
+    title: 'Websites & commerce',
+    description: 'Custom digital presence, from a focused landing page to a full storefront.',
+    services: ['Landing page', 'Business website', 'E-commerce storefront'],
+  },
+  {
+    title: 'Web applications',
+    description: 'User-ready MVPs and production-grade custom applications.',
+    services: ['MVP web application', 'Full-featured web application'],
+  },
+  {
+    title: 'AI systems',
+    description: 'Grounded assistants, governed agents, AI architecture and custom products.',
+    services: [
+      'Basic AI chatbot',
+      'RAG AI chatbot (documents & data)',
+      'AWS Bedrock agent build',
+      'Custom AI product & workflow',
+      'Multi-agent AI architecture',
+      'AI architecture design (blueprint only)',
+      'AI architecture design + implementation',
+      'Discord community & AI assistant setup',
+    ],
+  },
+  {
+    title: 'Cloud & DevOps',
+    description: 'Startup-focused cloud foundations and deployment workflows.',
+    services: ['Basic startup cloud deployment', 'Startup AWS / GCP cloud architecture'],
+  },
+  {
+    title: 'Data automation',
+    description: 'More dependable spreadsheets, reports and connected business workflows.',
+    services: [
+      'Spreadsheet repair & cleanup',
+      'Data cleanup & consolidation',
+      'Automated calculator / tracker',
+      'Reporting dashboard automation',
+      'Data pipeline & business automation',
+    ],
+  },
+];
+
 function SectionLabel({ children, dark = false }: { children: string; dark?: boolean }) {
   return (
     <div className={`eyebrow flex items-center gap-3 ${dark ? 'text-white/55' : 'text-black/50'}`}>
@@ -42,6 +85,17 @@ function SectionLabel({ children, dark = false }: { children: string; dark?: boo
 
 function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const targetId = window.location.hash.slice(1);
+    if (!targetId) return;
+
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(targetId)?.scrollIntoView({ block: 'start' });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -223,6 +277,43 @@ function Home() {
           </div>
         </section>
 
+        <section id="services" className="bg-[#f5f3ee] px-6 py-20 sm:px-10 sm:py-28 lg:px-14 lg:py-32">
+          <div className="mx-auto max-w-[1290px]">
+            <div className="grid gap-7 md:grid-cols-[.9fr_1.1fr] md:items-end">
+              <div>
+                <SectionLabel>What we can build</SectionLabel>
+                <h2 className="display mt-6 max-w-[640px] text-[clamp(2.7rem,5vw,4.6rem)] font-medium leading-[.98]">
+                  From a first page<br className="hidden sm:block" /> to a working system.
+                </h2>
+              </div>
+              <p className="max-w-[570px] text-sm leading-[1.8] text-black/60 md:justify-self-end">
+                Eolarity works across custom software, applied AI, cloud delivery and data automation. Each engagement is scoped around the problem and the team that will use the result.
+              </p>
+            </div>
+            <div className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {serviceGroups.map((group, i) => (
+                <article key={group.title} className="border border-black/15 bg-[#f9f7f2] p-5 transition-colors hover:border-[#D96725]/60 sm:p-7">
+                  <div className="flex items-start justify-between gap-4 border-b border-black/15 pb-5">
+                    <div>
+                      <span className="mono text-[9px] uppercase tracking-[.13em] text-[#D96725]">0{i + 1} / Services</span>
+                      <h3 className="display mt-3 text-[clamp(1.45rem,2vw,1.9rem)] font-medium leading-tight">{group.title}</h3>
+                    </div>
+                    <ArrowUpRight size={17} strokeWidth={1.5} className="mt-1 shrink-0 text-[#D96725]" />
+                  </div>
+                  <p className="mt-4 text-xs leading-[1.75] text-black/55">{group.description}</p>
+                  <ul className="mt-4">
+                    {group.services.map((service) => (
+                      <li key={service} className="border-t border-black/10 py-3 text-[12px] leading-[1.55] text-[#34373b] sm:text-[13px]">
+                        {service}
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section id="approach" className="bg-[#400D09] px-6 py-20 text-[#f2f2f2] sm:px-10 sm:py-28 lg:px-14 lg:py-32">
           <div className="mx-auto grid max-w-[1290px] gap-12 lg:grid-cols-[.88fr_1.12fr] lg:gap-24">
             <div>
@@ -364,8 +455,12 @@ function Home() {
 
       <footer className="bg-[#1F2226] px-6 pb-8 text-[#f2f2f2] sm:px-10 lg:px-14">
         <div className="mx-auto flex max-w-[1290px] flex-col gap-6 border-t border-white/15 pt-7 sm:flex-row sm:items-end sm:justify-between">
-          <div className="flex items-center gap-4">
-            <img src="/brand-assets/eolarity-inverted.png" alt="Eolarity Innovations LLP" className="h-auto w-[190px] sm:w-[210px]" />
+          <div className="flex flex-wrap items-center gap-4 sm:gap-5">
+            <img src="/brand-assets/eolarity-inverted.png" alt="Eolarity Innovations LLP" className="h-auto w-[150px] sm:w-[190px]" />
+            <div className="flex items-center gap-2 border-l border-white/20 pl-3 sm:gap-3 sm:pl-4">
+              <img src="/brand-assets/startup-india.png" alt="" className="h-9 w-[88px] object-contain sm:h-11 sm:w-[108px]" />
+              <span className="max-w-[78px] text-[9px] leading-[1.5] text-white/75 sm:max-w-[94px] sm:text-[10px]">Startup India registered</span>
+            </div>
           </div>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-[10px] text-white/45">
             <span>AI innovation &amp; engineering</span>
