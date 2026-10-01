@@ -171,7 +171,13 @@ function Home() {
                 </div>
               </div>
 
-              <aside aria-label="Our working principles" className="relative isolate min-h-[285px] rotate-[2deg] overflow-hidden bg-[#1F2226] p-6 text-[#f2f2f2] shadow-[13px_13px_0_rgba(64,13,9,.28)] sm:min-h-[330px] sm:p-8">
+              <aside aria-label="Our working principles" className="principle-card relative isolate min-h-[285px] overflow-hidden bg-[#1F2226] p-6 text-[#f2f2f2] sm:min-h-[330px] sm:p-8">
+                <div className="principle-object" aria-hidden="true">
+                  <span className="object-ring" />
+                  <span className="object-ring ring-two" />
+                  <span className="object-cross" />
+                  <span className="object-core" />
+                </div>
                 <div className="flex items-center justify-between mono text-[9px] uppercase tracking-[.1em] text-white/50">
                   <span>Shop note</span><span>01 — 04</span>
                 </div>
