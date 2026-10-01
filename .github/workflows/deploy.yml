@@ -1,4 +1,4 @@
-name: Deploy Eolarity Innovations Website to Amazon S3
+name: Deploy Eolarity Innovations Website to Amazon S3 (Keyless OIDC)
 
 on:
   push:
@@ -7,11 +7,12 @@ on:
       - master
 
 permissions:
+  id-token: write
   contents: read
 
 jobs:
   deploy:
-    name: Build & Deploy to AWS S3
+    name: Build & Keyless Deploy to AWS S3
     runs-on: ubuntu-latest
 
     steps:
@@ -34,11 +35,10 @@ jobs:
       - name: Build Web Application
         run: pnpm run build
 
-      - name: Configure AWS Credentials
+      - name: Configure AWS Credentials (Keyless OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: arn:aws:iam::239280166793:role/GitHubActionsS3DeployRole
           aws-region: ap-south-1
 
       - name: Deploy Build Artifacts to S3 Bucket
