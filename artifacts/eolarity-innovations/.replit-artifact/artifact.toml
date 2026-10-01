@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Eolarity Innovations"
+description = "A company website for Eolarity Innovations LLP, an AI consultancy and product studio building useful, production-ready AI solutions and automation for businesses and everyday work."
+version = "1.0.0"
+id = "artifacts/eolarity-innovations"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19544
+
+[services.development]
+run = "pnpm --filter @workspace/eolarity-innovations run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/eolarity-innovations", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/eolarity-innovations/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19544"
+BASE_PATH = "/"
